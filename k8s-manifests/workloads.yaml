@@ -1,0 +1,106 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue
+spec:
+  selector:
+    matchLabels:
+      app: queue
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+      - name: queue
+        image: richardchesterwood/istio-fleetman-queue:0
+        command: ["java","-Xmx50m","-jar","apache-activemq-5.14.3/activemq-all-5.14.3.jar","start"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-simulator
+spec:
+  selector:
+    matchLabels:
+      app: position-simulator
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: position-simulator
+    spec:
+      containers:
+      - name: position-simulator
+        image: richardchesterwood/istio-fleetman-position-simulator:0
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-tracker
+spec:
+  selector:
+    matchLabels:
+      app: position-tracker
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: position-tracker
+    spec:
+      containers:
+      - name: position-tracker
+        image: richardchesterwood/istio-fleetman-position-tracker:0
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: richardchesterwood/istio-fleetman-api-gateway:0
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: richardchesterwood/istio-fleetman-webapp-angular:0
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice

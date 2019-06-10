@@ -1,0 +1,9 @@
+#! /bin/bash
+
+for f in long_tracks/*
+do 
+   filename=$(basename "$f")
+
+
+  awk 'NR % 10 == 0' $f > ./tracks/$filename
+done
