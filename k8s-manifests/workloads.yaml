@@ -17,6 +17,7 @@ spec:
       - name: queue
         image: richardchesterwood/istio-fleetman-queue:0
         command: ["java","-Xmx50m","-jar","apache-activemq-5.14.3/activemq-all-5.14.3.jar","start"]
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,6 +40,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -61,6 +63,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -83,6 +86,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -104,3 +108,4 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
+        imagePullPolicy: Always
