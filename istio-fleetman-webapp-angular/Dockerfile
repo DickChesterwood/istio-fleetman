@@ -13,10 +13,6 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY /dist /usr/share/nginx/html
 
-COPY nginx.conf.j2 /templates/
-
-COPY docker-entrypoint.sh /
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY nginx.conf /etc/nginx/
 
 CMD ["nginx", "-g", "daemon off;"]
