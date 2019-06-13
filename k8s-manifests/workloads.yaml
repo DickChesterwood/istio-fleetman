@@ -104,7 +104,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:0
+        image: richardchesterwood/istio-fleetman-webapp-angular:1
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
