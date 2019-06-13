@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:0
+        image: richardchesterwood/istio-fleetman-api-gateway:1
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -104,7 +104,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:0
+        image: richardchesterwood/k8s-fleetman-webapp-angular:release2
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice

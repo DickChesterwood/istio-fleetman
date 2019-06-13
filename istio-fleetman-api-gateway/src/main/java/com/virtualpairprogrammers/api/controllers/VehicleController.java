@@ -30,7 +30,7 @@ public class VehicleController
 	@Autowired
 	private PositionTrackingExternalService externalService;
 
-	private Date lastUpdateTime;
+	private Date lastUpdateTime = new Date();
 
 	@GetMapping("/")
 	@ResponseBody
