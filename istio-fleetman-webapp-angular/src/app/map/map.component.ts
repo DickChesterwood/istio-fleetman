@@ -50,7 +50,7 @@ export class MapComponent implements OnInit {
                                                  shadowUrl: 'assets/marker-shadow.png'
                                                }),
                                    title: vehicle.name
-                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})});
+                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) { alert('ouch'); });
          this.markers.push(newMarker);
        }
        else
@@ -58,8 +58,6 @@ export class MapComponent implements OnInit {
         this.markers[foundIndex].setLatLng(latLng(vehicle.lat, vehicle.lng));
        }
        if (this.centerVehicle == vehicle.name) {
-         //this.map.setView([vehicle.lat,vehicle.lng],
-        //                   this.map.getZoom(), {"animate": true});
          this.selectedVehicleHistory.addLatLng(latLng(vehicle.lat, vehicle.lng));
        }
      });

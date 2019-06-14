@@ -19,6 +19,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
 
 import { environment } from '../environments/environment';
+import { RouterModule, Routes } from '@angular/router';
+import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
+import { MainComponent } from './main/main.component';
 
 const stompConfig: StompConfig = {
      url: environment.gatewayUrl.replace('http','ws') + "/updates",
@@ -30,14 +33,27 @@ const stompConfig: StompConfig = {
      debug: false
 };
 
+const appRoutes: Routes = [
+  { path: 'vehicle', component: StaticVehicleComponent },
+  { path: '', component: MainComponent },
+  { path: '**', component: StaticVehicleComponent }
+];
+
+
 @NgModule({
   declarations: [
     AppComponent,
     VehiclesComponent,
     MapComponent,
-    HeaderComponent
+    HeaderComponent,
+    StaticVehicleComponent,
+    MainComponent
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // TODO switch off it's annoying.
+    )
     BrowserModule,
     HttpClientModule,
     LeafletModule.forRoot(),
