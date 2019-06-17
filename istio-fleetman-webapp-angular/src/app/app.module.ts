@@ -21,7 +21,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
-import { MainComponent } from './main/main.component';
 
 const stompConfig: StompConfig = {
      url: environment.gatewayUrl.replace('http','ws') + "/updates",
@@ -35,7 +34,7 @@ const stompConfig: StompConfig = {
 
 const appRoutes: Routes = [
   { path: 'vehicle', component: StaticVehicleComponent },
-  { path: '', component: MainComponent },
+  { path: '', component: MapComponent },
   { path: '**', component: StaticVehicleComponent }
 ];
 
@@ -46,14 +45,13 @@ const appRoutes: Routes = [
     VehiclesComponent,
     MapComponent,
     HeaderComponent,
-    StaticVehicleComponent,
-    MainComponent
+    StaticVehicleComponent
   ],
   imports: [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // TODO switch off it's annoying.
-    )
+    ),
     BrowserModule,
     HttpClientModule,
     LeafletModule.forRoot(),
