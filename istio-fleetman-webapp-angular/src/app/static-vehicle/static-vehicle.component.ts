@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
 
 @Component({
   selector: 'app-static-vehicle',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StaticVehicleComponent implements OnInit {
 
-  constructor() { }
+  vehicleName: string;
+
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(params => {
+        this.vehicleName = params.params['vehicleName'];
+    });
   }
 
 }
