@@ -78,6 +78,7 @@ spec:
     metadata:
       labels:
         app: api-gateway
+        version: v2
     spec:
       containers:
       - name: api-gateway

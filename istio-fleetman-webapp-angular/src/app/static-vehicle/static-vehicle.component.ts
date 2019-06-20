@@ -13,9 +13,7 @@ export class StaticVehicleComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(params => {
-        this.vehicleName = params.params['vehicleName'];
-    });
+    this.vehicleName = this.activatedRoute.snapshot.paramMap.get("vehicleName");
   }
 
 }
