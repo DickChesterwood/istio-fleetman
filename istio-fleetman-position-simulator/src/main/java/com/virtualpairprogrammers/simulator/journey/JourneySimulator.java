@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import com.virtualpairprogrammers.simulator.services.VehiclePosition;
 import com.virtualpairprogrammers.simulator.utils.VehicleNameUtils;
 
 /**
- * Invoked periodcally by Quartz, a random position update is selected and transmitted.
+ * Invoked periodically by Quartz, a random position update is selected and transmitted.
  */
 @Component
 
@@ -45,7 +44,7 @@ public class JourneySimulator {
 	 * well as through direct execution
 	 */
 	@PostConstruct
-	private Map<String, Queue<String>> setUpData() 
+	private void setUpData() 
 	{
 		PathMatchingResourcePatternResolver path = new PathMatchingResourcePatternResolver();
 		try
@@ -54,21 +53,10 @@ public class JourneySimulator {
 			{
 				URL resource = nextFile.getURL();
 				File f = new File(resource.getFile()); 
-				String vehicleName = VehicleNameUtils.prettifyName(f.getName());
+				String vehicleName = VehicleNameUtils.prettifyName(f.getName());				
 				vehicleNames.add(vehicleName);
-				InputStream is = PositionsimulatorApplication.class.getResourceAsStream("/tracks/" + f.getName());
-				try (Scanner sc = new Scanner(is))
-				{
-					Queue<String> thisVehicleReports = new LinkedBlockingQueue<>();
-					while (sc.hasNextLine())
-					{
-						String nextReport = sc.nextLine();
-						thisVehicleReports.add(nextReport);
-					}
-					reports.put(vehicleName,thisVehicleReports);
-				}
+				populateReportQueueForVehicle(vehicleName);
 			}
-			return Collections.unmodifiableMap(reports);
 		}
 		catch (IOException e)
 		{
@@ -76,10 +64,26 @@ public class JourneySimulator {
 		}
 	}
 	
-    @Scheduled(fixedRate=1000)
+	private void populateReportQueueForVehicle(String vehicleName) {
+		InputStream is = PositionsimulatorApplication.class.getResourceAsStream("/tracks/" + VehicleNameUtils.uglifyName(vehicleName));
+		try (Scanner sc = new Scanner(is))
+		{
+			Queue<String> thisVehicleReports = new LinkedBlockingQueue<>();
+			while (sc.hasNextLine())
+			{
+				String nextReport = sc.nextLine();
+				thisVehicleReports.add(nextReport);
+			}
+			reports.put(vehicleName,thisVehicleReports);
+		}
+	}	
+	
+
+	@Scheduled(fixedRate=1000)
 	public void randomPositionUpdate()
 	{
-    	System.out.println("Now sending a message...");
+		// TODO introduce jitter and speed up vehicles, use UI for guidance...
+		
 		// Choose random vehicle
 		int position = (int)(Math.random() * vehicleNames.size());
 		String chosenVehicleName = vehicleNames.get(position);
@@ -87,8 +91,18 @@ public class JourneySimulator {
 		// Grab next report for this vehicle
 		// TODO: handle end of journey with a refresh (refactor the setupdata method above...)
 		String nextReport = reports.get(chosenVehicleName).poll();
+		if (nextReport == null)
+		{
+			System.out.println("Journey over for " + chosenVehicleName + ". Restarting route");
+			populateReportQueueForVehicle(chosenVehicleName);
+		}
 		
-		// TODO refactor this
+		VehiclePosition report = getVehicleDataFromRawString(chosenVehicleName, nextReport);
+
+		positionTracker.sendReportToPositionTracker(report);
+	}
+
+	private VehiclePosition getVehicleDataFromRawString(String chosenVehicleName, String nextReport) {
 		String[] data = nextReport.split("\"");
 		String lat = data[1];
 		String longitude = data[3];
@@ -99,7 +113,6 @@ public class JourneySimulator {
 				                  .withLng(longitude)
 				                  .withTimestamp(new java.util.Date())
 				                  .build();
-
-		positionTracker.sendReportToPositionTracker(report);
+		return report;
 	}
 }

@@ -20,7 +20,6 @@ public class IncomingReportsController {
 	@RequestMapping( method=RequestMethod.POST, value="/vehicles/")
 	public void receiveUpdatedPostion(@RequestBody VehiclePosition newReport) throws ParseException 
 	{
-		System.out.println("Recieved data!" + newReport);
 		data.updatePosition(newReport);
 	}
 

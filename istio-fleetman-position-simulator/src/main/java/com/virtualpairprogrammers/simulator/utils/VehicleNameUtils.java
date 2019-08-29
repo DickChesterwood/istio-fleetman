@@ -8,4 +8,7 @@ public class VehicleNameUtils {
 		return WordUtils.capitalizeFully(originalName.replaceAll("_", " "));
 	}
 
+	public static String uglifyName(String vehicleName) {
+		return vehicleName.replaceAll(" ", "_").toLowerCase();
+	}
 }
