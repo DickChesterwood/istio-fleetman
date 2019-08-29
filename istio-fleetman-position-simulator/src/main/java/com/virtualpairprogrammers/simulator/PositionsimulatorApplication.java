@@ -4,9 +4,14 @@ import java.io.IOException;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.virtualpairprogrammers.simulator.journey.JourneySimulator;
+import com.virtualpairprogrammers.simulator.services.PositionTrackerExternalService;
+import com.virtualpairprogrammers.simulator.services.RemotePositionMicroserviceCalls;
+import com.virtualpairprogrammers.simulator.services.VehicleBuilder;
+import com.virtualpairprogrammers.simulator.services.VehiclePosition;
 
 /**
  * Written for the Microservices course, this is a toy application which simulates the progress
@@ -21,18 +26,17 @@ import com.virtualpairprogrammers.simulator.journey.JourneySimulator;
  * @author Richard Chesterwood
  */
 @SpringBootApplication
+@EnableFeignClients
 public class PositionsimulatorApplication {
 
 	public static void main(String[] args) throws IOException, InterruptedException 
 	{
-		try(ConfigurableApplicationContext ctx = SpringApplication.run(PositionsimulatorApplication.class))
-		{
-			final JourneySimulator simulator = ctx.getBean(JourneySimulator.class);
-
-			Thread mainThread = new Thread(simulator);
-			mainThread.start();
-		}
+		ConfigurableApplicationContext ctx = SpringApplication.run(PositionsimulatorApplication.class);
 		
+		final JourneySimulator simulator = ctx.getBean(JourneySimulator.class);
+
+		Thread mainThread = new Thread(simulator);
+		mainThread.start();
 	}
 
 }

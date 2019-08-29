@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.0.RELEASE</version>
+		<version>1.5.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -24,24 +24,35 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Edgware.SR3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 		  <groupId>org.apache.commons</groupId>
 		  <artifactId>commons-text</artifactId>
 		  <version>1.3</version>
-		</dependency>	
-	
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
-
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	
+		
+   		<dependency>
+ 	   		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-feign</artifactId>
+    	</dependency> 
 	</dependencies>
 
 	<build>
@@ -50,36 +61,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
-			<plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.21.0</version>
-
-				<configuration>
-					<dockerHost>tcp://192.168.99.100:2376</dockerHost>  
-                    <certPath>C:\Users\Richard\.docker\machine\machines\default</certPath>
-				
-                    <verbose>true</verbose>
-					<images>
-						<image>
-							<name>richardchesterwood/istio-fleetman-position-simulator</name>
-							<build>
-								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
-								<assembly>
-									<descriptorRef>artifact</descriptorRef>
-								</assembly>
-								<tags>
-									<tag>0</tag>
-								</tags>
-							</build>
-						</image>
-					</images>
-				</configuration>
-			</plugin>
-			
 		</plugins>
-		
+
 		<resources>
 			<resource>
 				<filtering>true</filtering>
@@ -88,7 +71,7 @@
 					<include>*.properties</include>
 					<include>tracks/*</include>
 				</includes>
-			</resource>		
-		</resources>		
+			</resource>
+		</resources>
 	</build>
 </project>

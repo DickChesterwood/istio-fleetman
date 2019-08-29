@@ -1,15 +1,15 @@
 package com.virtualpairprogrammers.simulator.journey;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
-import org.springframework.jms.UncategorizedJmsException;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.virtualpairprogrammers.simulator.services.PositionTrackerExternalService;
+import com.virtualpairprogrammers.simulator.services.VehicleBuilder;
+import com.virtualpairprogrammers.simulator.services.VehiclePosition;
 
 /**
  * A callable (so we can invoke in on a executor and join on it) that sends messages
@@ -17,20 +17,18 @@ import org.springframework.jms.core.JmsTemplate;
  */
 public class Journey implements Callable<Object> 
 {
+	@Autowired
+	private PositionTrackerExternalService positionTracker;
+	
 	private List<String> positions;
 	private String vehicleName;
-	private JmsTemplate jmsTemplate;
-	private String queueName;
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	
 	private static Logger log  = Logger.getLogger(Journey.class);
 
-	public Journey(String vehicleName, List<String> positions, JmsTemplate jmsTemplate, String queueName) 
+	public Journey(String vehicleName, List<String> positions) 
 	{
 		this.positions = Collections.unmodifiableList(positions);
 		this.vehicleName = vehicleName;
-		this.jmsTemplate = jmsTemplate;
-		this.queueName = queueName;
 	}
 
 	@Override
@@ -47,43 +45,18 @@ public class Journey implements Callable<Object>
 				String lat = data[1];
 				String longitude = data[3];
 	
-				// Spring will convert a HashMap into a MapMessage using the default MessageConverter.
-				HashMap<String,String> positionMessage = new HashMap<>();
-				positionMessage.put("vehicle", vehicleName);
-				positionMessage.put("lat", lat);
-				positionMessage.put("long", longitude);
-				positionMessage.put("time", formatter.format(new java.util.Date()));
+				VehiclePosition report = new VehicleBuilder()
+						                  .withName(vehicleName)
+						                  .withLat(lat)
+						                  .withLng(longitude)
+						                  .withTimestamp(new java.util.Date())
+						                  .build();
 	
-				sendToQueue(positionMessage);
+				positionTracker.sendReportToPositionTracker(report);
 	
 				// We have an element of randomness to help the queue be nicely 
 				// distributed
 				delay(Math.random() * 10000 + 2000);
-			}
-		}
-	}
-
-	/**
-	 * Sends a message to the position queue - we've hardcoded this in at present - of course
-	 * this needs to be fixed on the course!
-	 * @param positionMessage
-	 * @throws InterruptedException 
-	 */
-	private void sendToQueue(Map<String, String> positionMessage) throws InterruptedException {
-		boolean messageNotSent = true;
-		while (messageNotSent)
-		{
-			// broadcast this report
-			try
-			{
-				jmsTemplate.convertAndSend(queueName,positionMessage);
-				messageNotSent = false;
-			}
-			catch (UncategorizedJmsException e)
-			{
-				// we are going to assume that this is due to downtime - back off and go again
-				log.warn("Queue unavailable - backing off 5000ms before retry");
-				delay(5000);
 			}
 		}
 	}

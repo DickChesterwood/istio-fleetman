@@ -14,6 +14,7 @@ export class StaticVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleName = this.activatedRoute.snapshot.paramMap.get("vehicleName");
+    this.vehicleName = this.vehicleName.replace(/_/g, ' ');
   }
 
 }

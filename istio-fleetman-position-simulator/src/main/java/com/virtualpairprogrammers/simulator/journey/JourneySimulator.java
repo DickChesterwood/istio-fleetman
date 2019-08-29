@@ -14,11 +14,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import com.virtualpairprogrammers.simulator.PositionsimulatorApplication;
@@ -26,12 +23,6 @@ import com.virtualpairprogrammers.simulator.utils.VehicleNameUtils;
 
 @Component
 public class JourneySimulator implements Runnable {
-
-	@Autowired
-	private JmsTemplate template;
-	
-	@Value("${fleetman.position.queue}")
-	private String queueName;
 
 	private ExecutorService threadPool;
 
@@ -64,7 +55,7 @@ public class JourneySimulator implements Runnable {
 			for (String vehicleName : reports.keySet())
 			{
 				// kick off a message sending thread for this vehicle.
-				calls.add(new Journey(vehicleName, reports.get(vehicleName), template, queueName));
+				calls.add(new Journey(vehicleName, reports.get(vehicleName)));
 			}
 			
 			threadPool.invokeAll(calls);
