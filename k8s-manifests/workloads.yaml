@@ -2,26 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: queue
-spec:
-  selector:
-    matchLabels:
-      app: queue
-  replicas: 1
-  template: # template for the pods
-    metadata:
-      labels:
-        app: queue
-    spec:
-      containers:
-      - name: queue
-        image: richardchesterwood/istio-fleetman-queue:0
-        # command: ["java","-Xmx100m","-jar","apache-activemq-5.14.3/activemq-all-5.14.3.jar","start"]
-        imagePullPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: position-simulator
 spec:
   selector:
