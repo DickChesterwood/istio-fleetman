@@ -11,9 +11,12 @@ public class PositionTrackerExternalService
 	
 	public void sendReportToPositionTracker(VehiclePosition report)
 	{
-		System.out.println("sending...");
 		remoteService.sendNewPositionReport(report);
-		System.out.println("sent??");
+	}
+
+	public void clearHistories() 
+	{
+		remoteService.clearHistories();
 	}
 }
 

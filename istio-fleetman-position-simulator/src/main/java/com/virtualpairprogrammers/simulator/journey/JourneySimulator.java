@@ -62,6 +62,7 @@ public class JourneySimulator {
 		{
 			throw new RuntimeException(e);
 		}
+		positionTracker.clearHistories();
 	}
 	
 	private void populateReportQueueForVehicle(String vehicleName) {
@@ -79,22 +80,29 @@ public class JourneySimulator {
 	}	
 	
 
-	@Scheduled(fixedRate=1000)
+	@Scheduled(fixedDelay=100)
 	public void randomPositionUpdate()
 	{
-		// TODO introduce jitter and speed up vehicles, use UI for guidance...
-		
+		// Random jitter. Sometimes we'll do nothing
+//		if (Math.random() < 0.9) return;
+				
 		// Choose random vehicle
 		int position = (int)(Math.random() * vehicleNames.size());
 		String chosenVehicleName = vehicleNames.get(position);
 		
 		// Grab next report for this vehicle
-		// TODO: handle end of journey with a refresh (refactor the setupdata method above...)
-		String nextReport = reports.get(chosenVehicleName).poll();
-		if (nextReport == null)
+		// To smooth out fluctuations, we'll miss out lots of reports
+		int randomReportDrop = (int)(Math.random() * 10);
+		String nextReport = null;
+		for (int i=0; i<=randomReportDrop; i++)
 		{
-			System.out.println("Journey over for " + chosenVehicleName + ". Restarting route");
-			populateReportQueueForVehicle(chosenVehicleName);
+			nextReport = reports.get(chosenVehicleName).poll();
+			if (nextReport == null)
+			{
+				System.out.println("Journey over for " + chosenVehicleName + ". Restarting route");
+				populateReportQueueForVehicle(chosenVehicleName);
+				nextReport = reports.get(chosenVehicleName).poll();
+			}
 		}
 		
 		VehiclePosition report = getVehicleDataFromRawString(chosenVehicleName, nextReport);

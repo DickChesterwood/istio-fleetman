@@ -10,4 +10,7 @@ public interface RemotePositionMicroserviceCalls
 {
 	@RequestMapping(method=RequestMethod.POST, value="/vehicles/")
 	public void sendNewPositionReport(@RequestBody VehiclePosition report);
+
+	@RequestMapping(method=RequestMethod.DELETE, value="/vehicles/")
+	public void clearHistories();
 }

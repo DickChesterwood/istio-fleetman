@@ -132,9 +132,12 @@ public class DataBasicInMemoryImpl implements Data
 		return results;
 	}
 
-	@Override
 	public Collection<VehiclePosition> getHistoryFor(String vehicleName) throws VehicleNotFoundException 
 	{
 		return this.getAllReportsForVehicleSince(vehicleName, new Date(0L));
+	}
+
+	public void reset() {
+		positionDatabase.clear();
 	}
 }

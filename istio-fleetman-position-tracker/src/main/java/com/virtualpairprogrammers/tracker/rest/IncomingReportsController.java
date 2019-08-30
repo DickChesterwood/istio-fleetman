@@ -23,4 +23,9 @@ public class IncomingReportsController {
 		data.updatePosition(newReport);
 	}
 
+	@RequestMapping(method=RequestMethod.DELETE, value="/vehicles/")
+	public void resetHistories()
+	{
+		data.reset();
+	}
 }
