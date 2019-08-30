@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  gatewayUrl: window.location.protocol + "//" + "192.168.99.100:30020",
+  gatewayUrl: window.location.protocol + "//" + "localhost:8080",
 };
