@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:0
+        image: richardchesterwood/istio-fleetman-position-simulator:2
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:0
+        image: richardchesterwood/istio-fleetman-position-tracker:2
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:1
+        image: richardchesterwood/istio-fleetman-api-gateway:2
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:1
+        image: richardchesterwood/istio-fleetman-webapp-angular:2
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
