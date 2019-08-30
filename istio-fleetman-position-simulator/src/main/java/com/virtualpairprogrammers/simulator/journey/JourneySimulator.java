@@ -84,7 +84,7 @@ public class JourneySimulator {
 	public void randomPositionUpdate()
 	{
 		// Random jitter. Sometimes we'll do nothing
-//		if (Math.random() < 0.9) return;
+		if (Math.random() < 0.9) return;
 				
 		// Choose random vehicle
 		int position = (int)(Math.random() * vehicleNames.size());

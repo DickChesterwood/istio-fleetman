@@ -59,7 +59,7 @@ public class VehicleController
 		return results;
 	}
 
-	@Scheduled(fixedRate=2000)
+	@Scheduled(fixedRate=100)
 	public void updatePositions()
 	{
 		Collection<VehiclePosition> results = externalService.getAllUpdatedPositionsSince(lastUpdateTime);
