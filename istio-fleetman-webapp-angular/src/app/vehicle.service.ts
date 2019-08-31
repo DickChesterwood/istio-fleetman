@@ -44,7 +44,7 @@ export class VehicleService  {
                                  Number(body.lat),
                                  Number(body.longitude),
                                  body.timestamp,
-                                Number(body.speed));
+                                 body.speed);
     this.subscription.next(newVehicle);
   }
 

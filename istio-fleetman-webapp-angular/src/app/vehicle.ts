@@ -3,9 +3,9 @@ export class Vehicle {
   lat: number;
   lng: number;
   dateAndTime: string;
-  speed: number;
+  speed: string;
 
-  constructor(name: string, lat:number, lng:number, dateAndTime:string, speed: number) {
+  constructor(name: string, lat:number, lng:number, dateAndTime:string, speed: string) {
     this.name = name;
     this.lat = lat;
     this.lng = lng;

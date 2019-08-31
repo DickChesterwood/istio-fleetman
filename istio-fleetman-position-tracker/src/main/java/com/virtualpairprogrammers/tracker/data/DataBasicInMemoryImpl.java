@@ -17,6 +17,7 @@ import com.virtualpairprogrammers.tracker.domain.VehicleBuilder;
 import com.virtualpairprogrammers.tracker.domain.VehicleNotFoundException;
 import com.virtualpairprogrammers.tracker.domain.VehiclePosition;
 import com.virtualpairprogrammers.tracker.externalservices.ExternalVehicleTelemetryService;
+import com.virtualpairprogrammers.tracker.externalservices.TelemetryServiceUnavailableException;
 
 /**
  * This is a quick and dirty dev-standin (for local testing) that stores vehicle position reports
@@ -43,7 +44,6 @@ public class DataBasicInMemoryImpl implements Data
 	@Override
 	public void updatePosition(VehiclePosition data)
 	{
-		telemetryService.updateData(data);
 		String vehicleName = data.getName();
 		TreeSet<VehiclePosition> positions = positionDatabase.get(vehicleName);
 		if (positions == null) 
@@ -51,9 +51,18 @@ public class DataBasicInMemoryImpl implements Data
 			positions = new TreeSet<>();
 			positionDatabase.put(vehicleName, positions);
 		}
-		BigDecimal speed = telemetryService.getSpeedFor(vehicleName);
-		VehiclePosition vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withSpeed(speed).build();
+		
+		VehiclePosition vehicleWithSpeed;
+		try {
+			BigDecimal speed = telemetryService.getSpeedFor(vehicleName); // SLOW if upstream unavailable. Could be an Istio demo.
+			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withSpeed(speed).withTimestamp(new Date()).build();
+		} catch (TelemetryServiceUnavailableException e) {
+			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withTimestamp(new Date()).build();
+			System.out.println("handle problem with null speed");
+		}
+		System.out.println("Adding to database.");
 		positions.add(vehicleWithSpeed);
+		telemetryService.updateData(data); // see case #8 for details on why we do this last
 	}
 	
 	@Override

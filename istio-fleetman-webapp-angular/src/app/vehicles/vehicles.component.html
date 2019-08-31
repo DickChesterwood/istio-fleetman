@@ -12,7 +12,7 @@
           [class.table-info]="vehicle.name === centeredVehicle"  style="cursor:pointer">
         <th scope="row"><span class="fa fa-truck"></span>{{vehicle.name}}</th>
         <td>{{vehicle.dateAndTime | date:'HH:mm:ss'}}</td>
-        <td>{{vehicle.speed | number:'0.0-0'}}</td>
+        <td>{{vehicle.speed | number:'0.0-0' || '--'}}</td>
       </tr>
     </tbody>
   </table>
