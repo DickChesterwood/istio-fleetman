@@ -58,9 +58,7 @@ public class DataBasicInMemoryImpl implements Data
 			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withSpeed(speed).withTimestamp(new Date()).build();
 		} catch (TelemetryServiceUnavailableException e) {
 			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withTimestamp(new Date()).build();
-			System.out.println("handle problem with null speed");
 		}
-		System.out.println("Adding to database.");
 		positions.add(vehicleWithSpeed);
 		telemetryService.updateData(data); // see case #8 for details on why we do this last
 	}

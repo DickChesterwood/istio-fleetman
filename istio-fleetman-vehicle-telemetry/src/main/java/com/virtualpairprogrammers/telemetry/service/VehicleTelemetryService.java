@@ -37,8 +37,8 @@ public class VehicleTelemetryService
 		Deque<VehiclePosition> positions = vehicleCache.get(vehicleName);
 		if (positions == null || positions.size() < 2) return null;
 		
-		VehiclePosition posB = positions.getFirst(); 
-		VehiclePosition posA = positions.getLast(); // confusing - this is actually the last report recorded
+		VehiclePosition posA = positions.getFirst(); 
+		VehiclePosition posB = positions.getLast();
 		
 		long timeAinMillis = posA.getTimestamp().getTime();
 		long timeBinMillis = posB.getTimestamp().getTime();
@@ -55,6 +55,13 @@ public class VehicleTelemetryService
 		
 		BigDecimal speedInMps = distanceInMetres.divide(timeInSeconds, RoundingMode.HALF_UP);
 		BigDecimal milesPerHour = speedInMps.multiply(MPS_TO_MPH_FACTOR);
+		
+		// The data we're using has come from some odd sources and can have some odd values in it; so it gets fudged!
+		if (milesPerHour.doubleValue() > 70)
+		{
+			milesPerHour = new BigDecimal(((Math.random() * 80) + 30));
+		}
+		
 		return milesPerHour;
 	}
 
