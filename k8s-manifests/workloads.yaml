@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:2
+        image: richardchesterwood/istio-fleetman-position-simulator:3
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:2
+        image: richardchesterwood/istio-fleetman-position-tracker:3
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:2
+        image: richardchesterwood/istio-fleetman-api-gateway:3
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -85,7 +85,30 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:2
+        image: richardchesterwood/istio-fleetman-webapp-angular:3
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+---
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-telemetry
+spec:
+  selector:
+    matchLabels:
+      app: vehicle-telemetry
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: vehicle-telemetry
+    spec:
+      containers:
+      - name: vehicle-telemtry
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:3
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
