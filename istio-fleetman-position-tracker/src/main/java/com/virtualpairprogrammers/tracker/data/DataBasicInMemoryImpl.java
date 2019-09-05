@@ -121,4 +121,8 @@ public class DataBasicInMemoryImpl implements Data
 	public void reset() {
 		positionDatabase.clear();
 	}
+
+	public void setTelemetryService(ExternalVehicleTelemetryService ts) {
+		this.telemetryService = ts;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import com.virtualpairprogrammers.tracker.domain.VehicleNotFoundException;
 import com.virtualpairprogrammers.tracker.domain.VehiclePosition;
+import com.virtualpairprogrammers.tracker.externalservices.ExternalVehicleTelemetryService;
 
 public interface Data {
 
