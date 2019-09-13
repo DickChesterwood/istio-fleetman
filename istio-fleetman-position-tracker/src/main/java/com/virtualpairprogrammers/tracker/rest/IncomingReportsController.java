@@ -20,6 +20,11 @@ public class IncomingReportsController {
 	@RequestMapping( method=RequestMethod.POST, value="/vehicles/")
 	public void receiveUpdatedPostion(@RequestBody VehiclePosition newReport) throws ParseException 
 	{
+		// For tag :upgrade1
+		if (Math.random() < 0.9)
+		{
+			throw new NullPointerException();
+		}
 		data.updatePosition(newReport);
 	}
 

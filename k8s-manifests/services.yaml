@@ -49,7 +49,7 @@ metadata:
   name: fleetman-vehicle-telemetry
 spec:
   selector:
-    app: vehicle-telemetry
+    app: vehicle-telemetry #  I THINK This is redundant in Istio.
   ports:
     - name: http
       port: 8080

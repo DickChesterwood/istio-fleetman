@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:3
+        image: richardchesterwood/istio-fleetman-position-tracker:upgrade1
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -90,7 +90,6 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         imagePullPolicy: Always
----
 ---
 apiVersion: apps/v1
 kind: Deployment
