@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:3
+        image: richardchesterwood/istio-fleetman-position-simulator:3-delete
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
-        imagePullPolicy: Always
+        # imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,12 +38,12 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:upgrade1
+        image: richardchesterwood/istio-fleetman-position-tracker:3-delete
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
-        imagePullPolicy: Always
+        # imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
