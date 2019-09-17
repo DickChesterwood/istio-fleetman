@@ -60,4 +60,32 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/5.1.9.RELEASE/spring-test-5.1.9.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/xmlunit/xmlunit-core/2.6.3/xmlunit-core-2.6.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/gavaghan/geodesy/1.1.3/geodesy-1.1.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-starter-openfeign/2.1.2.RELEASE/spring-cloud-starter-openfeign-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-starter/2.1.2.RELEASE/spring-cloud-starter-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-context/2.1.2.RELEASE/spring-cloud-context-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-crypto/5.1.6.RELEASE/spring-security-crypto-5.1.6.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-commons/2.1.2.RELEASE/spring-cloud-commons-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-rsa/1.0.7.RELEASE/spring-security-rsa-1.0.7.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcpkix-jdk15on/1.60/bcpkix-jdk15on-1.60.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.60/bcprov-jdk15on-1.60.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-openfeign-core/2.1.2.RELEASE/spring-cloud-openfeign-core-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-netflix-ribbon/2.1.2.RELEASE/spring-cloud-netflix-ribbon-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/cloud/spring-cloud-netflix-archaius/2.1.2.RELEASE/spring-cloud-netflix-archaius-2.1.2.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/boot/spring-boot-starter-aop/2.1.7.RELEASE/spring-boot-starter-aop-2.1.7.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjweaver/1.9.4/aspectjweaver-1.9.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/github/openfeign/form/feign-form-spring/3.8.0/feign-form-spring-3.8.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/github/openfeign/form/feign-form/3.8.0/feign-form-3.8.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.4/commons-fileupload-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.2/commons-io-2.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/github/openfeign/feign-core/10.2.3/feign-core-10.2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/github/openfeign/feign-slf4j/10.2.3/feign-slf4j-10.2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/github/openfeign/feign-hystrix/10.2.3/feign-hystrix-10.2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/netflix/archaius/archaius-core/0.7.6/archaius-core-0.7.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/code/findbugs/jsr305/3.0.1/jsr305-3.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-configuration/commons-configuration/1.8/commons-configuration-1.8.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/16.0/guava-16.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/netflix/hystrix/hystrix-core/1.5.18/hystrix-core-1.5.18.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/reactivex/rxjava/1.3.8/rxjava-1.3.8.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hdrhistogram/HdrHistogram/2.1.9/HdrHistogram-2.1.9.jar"/>
 </classpath>

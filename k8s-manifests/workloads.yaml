@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:3
+        image: richardchesterwood/istio-fleetman-api-gateway:3-delete
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:3
+        image: richardchesterwood/istio-fleetman-webapp-angular:3 # TODO!
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -107,7 +107,7 @@ spec:
     spec:
       containers:
       - name: vehicle-telemtry
-        image: richardchesterwood/istio-fleetman-vehicle-telemetry:3
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:3-delete
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
