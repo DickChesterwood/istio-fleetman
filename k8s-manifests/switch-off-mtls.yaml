@@ -1,0 +1,13 @@
+# This is the pick up point. This was needed for the webapp to work; it will be because
+# nginx is sending ws:// calls through to the api gateway, but by default non https traffic
+# is blocked. I'm not sure the end result of this; I need to look into the nginx config and review.
+# For now, this works at least, but it's not ideal.
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: "default"
+  namespace: "default"
+spec:
+  peers:
+    - mtls:
+        mode: PERMISSIVE
