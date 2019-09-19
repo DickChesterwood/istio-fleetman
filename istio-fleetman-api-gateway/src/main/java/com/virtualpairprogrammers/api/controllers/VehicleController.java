@@ -59,7 +59,7 @@ public class VehicleController
 		return results;
 	}
 
-	@Scheduled(fixedRate=100)
+	// @Scheduled(fixedRate=100) TODO reinstate
 	public void updatePositions()
 	{
 		Collection<VehiclePosition> results = externalService.getAllUpdatedPositionsSince(lastUpdateTime);

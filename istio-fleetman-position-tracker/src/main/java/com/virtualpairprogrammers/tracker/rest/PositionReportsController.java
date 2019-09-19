@@ -2,6 +2,9 @@ package com.virtualpairprogrammers.tracker.rest;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,9 +40,20 @@ public class PositionReportsController
 		}
 	}
 	
+	private @Autowired HttpServletRequest request;
+	
 	@RequestMapping(method=RequestMethod.GET, value="/history/{vehicleName}")
 	public Collection<VehiclePosition> getEntireHistoryForVehicle(@PathVariable String vehicleName) throws VehicleNotFoundException
 	{
+		// Peek at request headers...
+		Enumeration<String> names = request.getHeaderNames();
+		while (names.hasMoreElements())
+		{
+			String name = names.nextElement();
+			String value = request.getHeader(name);
+			System.out.println("Got the header: " + name + "," + value);
+		}
+		
 		return this.data.getHistoryFor(vehicleName);
 	}
 	
