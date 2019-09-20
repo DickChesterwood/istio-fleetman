@@ -17,18 +17,27 @@ public class PropagateHeadersInterceptor implements RequestInterceptor {
 
 	@Override
 	public void apply(RequestTemplate template) {
-		Enumeration<String> e = request.getHeaderNames();
-		while (e.hasMoreElements())
+		
+		// TODO this is work in progress, will be removing the httpservletreq I hope shortly
+		try
 		{
-			String header = e.nextElement();
-			if (header.startsWith("x-"))
+			Enumeration<String> e = request.getHeaderNames();
+			while (e.hasMoreElements())
 			{
-				String value = request.getHeader(header);
-				template.header(header, value);
-				System.out.println("Added custom header " + value);
+				String header = e.nextElement();
+				if (header.startsWith("x-"))
+				{
+					String value = request.getHeader(header);
+					template.header(header, value);
+					System.out.println("Added custom header " + value);
+				}
 			}
+			System.out.println("final header state: " + template.headers());
+			System.out.println("Done. Now check the onward service!");
 		}
-		System.out.println("final header state: " + template.headers());
-		System.out.println("Done. Now check the onward service!");
+		catch (IllegalStateException e)
+		{
+			// no problem, this isn't an incoming web request - scheduled timed update
+		}
 	}
 }

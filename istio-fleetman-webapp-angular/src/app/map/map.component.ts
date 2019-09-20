@@ -50,7 +50,9 @@ export class MapComponent implements OnInit {
                                                  shadowUrl: 'assets/marker-shadow.png'
                                                }),
                                    title: vehicle.name
-                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) { alert('ouch'); });
+                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) {
+                                    alert("Looking for vehicle " + vehicle.name);
+                                      });
          this.markers.push(newMarker);
        }
        else

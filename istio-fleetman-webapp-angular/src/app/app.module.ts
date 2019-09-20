@@ -1,3 +1,4 @@
+import {MdDialogModule} from '@angular/material';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Inject } from '@angular/core';
@@ -45,7 +46,8 @@ const appRoutes: Routes = [
     VehiclesComponent,
     MapComponent,
     HeaderComponent,
-    StaticVehicleComponent
+    StaticVehicleComponent,
+    MdDialogModule 
   ],
   imports: [
     RouterModule.forRoot(
