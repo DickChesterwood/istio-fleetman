@@ -19,6 +19,7 @@ export class MapComponent implements OnInit {
   map: Map;
   centerVehicle: string;
   selectedVehicleHistory;
+  popUpOpen = false;
 
   options = {
     layers: [
@@ -55,7 +56,7 @@ export class MapComponent implements OnInit {
                                                }),
                                    title: vehicle.name
                                  }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) {
-                                    alert("TODO.");
+                                   this.popUpOpen = true;
                                       });
          this.markers.push(newMarker);
        }

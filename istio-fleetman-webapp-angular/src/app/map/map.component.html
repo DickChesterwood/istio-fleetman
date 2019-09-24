@@ -1,6 +1,20 @@
 <div id="mapid"
       leaflet
      [leafletOptions]="options"
-     (leafletMapReady)="onMapReady($event)"     
+     (leafletMapReady)="onMapReady($event)"
      [leafletLayers]="markers">
 </div>
+<app-pop-up class="my-prompt" [isOpen]="popUpOpen">
+  <div class="box">
+    <header>
+      <span class="title">Delete Record</span>
+    </header>
+    <main>
+      Are you sure you want to delete this record?
+    </main>
+    <footer>
+      <button (click)="deleteOption()">&lt;&nbsp;Delete&nbsp;&gt;</button>
+      <button (click)="cancelOption()">&lt;&nbsp;Cancel&nbsp;&gt;</button>
+    </footer>
+  </div>
+</app-pop-up>
