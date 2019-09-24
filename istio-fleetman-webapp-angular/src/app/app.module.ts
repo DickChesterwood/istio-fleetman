@@ -1,5 +1,3 @@
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatDialogModule} from '@angular/material/dialog';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Inject } from '@angular/core';
@@ -23,7 +21,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
-import { StaffDetailsComponent  } from './staff-details/staff-details.component';
 
 const stompConfig: StompConfig = {
      url: environment.gatewayUrl.replace('http','ws') + "/updates",
@@ -48,10 +45,9 @@ const appRoutes: Routes = [
     VehiclesComponent,
     MapComponent,
     HeaderComponent,
-    StaticVehicleComponent,
-    StaffDetailsComponent
+    StaticVehicleComponent
   ],
-  entryComponents: [StaffDetailsComponent],
+  entryComponents: [],
 
   imports: [
     RouterModule.forRoot(
@@ -62,8 +58,6 @@ const appRoutes: Routes = [
     HttpClientModule,
     LeafletModule.forRoot(),
     NgbModule.forRoot(),
-    BrowserAnimationsModule,
-    MatDialogModule
   ],
   providers: [VehicleService,
               StompService,

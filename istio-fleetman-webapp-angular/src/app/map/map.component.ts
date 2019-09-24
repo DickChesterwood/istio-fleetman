@@ -4,8 +4,6 @@ import { icon, latLng, Layer, Marker, marker, tileLayer, Map, point, polyline } 
 
 import { VehicleService } from '../vehicle.service';
 import { Vehicle } from '../vehicle';
-import { StaffDetailsComponent } from "../staff-details/staff-details.component"
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-map',
@@ -14,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class MapComponent implements OnInit {
 
-  constructor(private vehicleService: VehicleService, public dialog: MatDialog) {
+  constructor(private vehicleService: VehicleService) {
   }
 
   markers: Marker[] = [];
@@ -57,10 +55,7 @@ export class MapComponent implements OnInit {
                                                }),
                                    title: vehicle.name
                                  }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) {
-                                   const dialogRef = this.dialog.open(StaffDetailsComponent, {
-                                          width: '250px',
-                                          data: {name: vehicle.name}
-                                        });
+                                    alert("TODO.");
                                       });
          this.markers.push(newMarker);
        }
