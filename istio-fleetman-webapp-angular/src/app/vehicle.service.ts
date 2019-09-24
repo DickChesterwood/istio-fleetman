@@ -36,7 +36,7 @@ export class VehicleService  {
 
   /** Consume a message from the _stompService */
   onMessage = (message: Message) => {
-
+    console.log("MESSAGE");
     let body = JSON.parse(message.body);
 
     // update vehicle and notify
@@ -45,6 +45,15 @@ export class VehicleService  {
                                  Number(body.longitude),
                                  body.timestamp,
                                  body.speed);
+    this.subscription.next(newVehicle);
+  }
+
+  doSomething() {
+    let newVehicle = new Vehicle("TEST",
+                                 42,
+                                 43,
+                                 "11",
+                                 "13");
     this.subscription.next(newVehicle);
   }
 
@@ -62,4 +71,5 @@ export class VehicleService  {
          .subscribe( data => this.centerVehicleHistory.next(data));
     }
   }
+
 }

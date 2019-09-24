@@ -46,4 +46,9 @@ export class VehiclesComponent implements OnInit {
     }
   }
 
+  update() {
+    this.vehicles.sort( (a:Vehicle,b:Vehicle) => {
+      return (a.name > b.name) ? -1 : 1;
+    });
+  }
 }

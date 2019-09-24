@@ -4,6 +4,8 @@ import { icon, latLng, Layer, Marker, marker, tileLayer, Map, point, polyline } 
 
 import { VehicleService } from '../vehicle.service';
 import { Vehicle } from '../vehicle';
+import { StaffDetailsComponent } from "../staff-details/staff-details.component"
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-map',
@@ -12,7 +14,8 @@ import { Vehicle } from '../vehicle';
 })
 export class MapComponent implements OnInit {
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService, public dialog: MatDialog) {
+  }
 
   markers: Marker[] = [];
   map: Map;
@@ -35,12 +38,15 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.vehicleService.subscription.subscribe(vehicle => {
        if (vehicle == null) return;
        let foundIndex = this.markers.findIndex(existingMarker => existingMarker.options['title'] == vehicle.name);
 
        if (foundIndex == -1)
        {
+         var self = this;
+
          let newMarker = marker([vehicle.lat,vehicle.lng] ,
                                  {
                                    icon: icon( {
@@ -51,7 +57,10 @@ export class MapComponent implements OnInit {
                                                }),
                                    title: vehicle.name
                                  }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) {
-                                    alert("Looking for vehicle " + vehicle.name);
+                                   const dialogRef = this.dialog.open(StaffDetailsComponent, {
+                                          width: '250px',
+                                          data: {name: vehicle.name}
+                                        });
                                       });
          this.markers.push(newMarker);
        }
@@ -61,6 +70,10 @@ export class MapComponent implements OnInit {
        }
        if (this.centerVehicle == vehicle.name) {
          this.selectedVehicleHistory.addLatLng(latLng(vehicle.lat, vehicle.lng));
+         this.map.flyTo([vehicle.lat,vehicle.lng],
+                           this.map.getZoom(), {
+         				   	       "animate": false
+         				  });
        }
      });
 
@@ -73,7 +86,7 @@ export class MapComponent implements OnInit {
        this.centerVehicle = vehicle.name;
        this.map.flyTo([vehicle.lat,vehicle.lng],
                          this.map.getZoom(), {
-       				   	       "animate": true
+       				   	       "animate": false
        				  });
      });
 
