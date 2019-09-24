@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from '../vehicle';
 import { VehicleService } from '../vehicle.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicles',
@@ -12,7 +13,22 @@ export class VehiclesComponent implements OnInit {
   vehicles: Vehicle[] = [];
   centeredVehicle: string;
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService, private router: Router) { }
+
+  openPopUp() {
+      this.mapVisible = !this.mapVisible;
+      if (this.mapVisible)
+      {
+        this.router.navigateByUrl("/");
+        // TODO - need to fly to selecvted vehicle
+      }
+      else
+      {
+        this.router.navigateByUrl("/vehicle" + this.centeredVehicle);
+      }
+
+      console.log("set mv to " + this.mapVisible);
+  }
 
   ngOnInit() {
     this.vehicleService.subscription.subscribe(updatedVehicle => {
@@ -44,6 +60,12 @@ export class VehiclesComponent implements OnInit {
       this.centeredVehicle = vehicle.name;
       this.vehicleService.updateCenterVehicle(vehicle);
     }
+
+    if (!this.mapVisible)
+    {
+      this.router.navigateByUrl(`/vehicle/${vehicle.name  }`);
+    }
+    console.log("done with visible " + this.mapVisible);
   }
 
   update() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import { VehicleService } from '../vehicle.service';
 
 @Component({
   selector: 'app-static-vehicle',
@@ -8,13 +9,23 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 })
 export class StaticVehicleComponent implements OnInit {
 
-  vehicleName: string;
+  constructor(private activatedRoute: ActivatedRoute, private vehicleService: VehicleService, private router: Router) { }
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  centerVehicle: string;
 
   ngOnInit() {
-    this.vehicleName = this.activatedRoute.snapshot.paramMap.get("vehicleName");
-    this.vehicleName = this.vehicleName.replace(/_/g, ' ');
+    this.centerVehicle = this.activatedRoute.snapshot.paramMap.get("vehicleName");
+    this.centerVehicle = this.centerVehicle.replace(/_/g, ' ');
+
+    this.vehicleService.centerVehicle.subscribe(vehicle => {
+      this.centerVehicle = vehicle.name;
+
+      console.log(this.activatedRoute.routeConfig.component.name);
+      if (this.activatedRoute.routeConfig.component == StaticVehicleComponent)
+      {
+        this.router.navigateByUrl(`/vehicle/${vehicle.name  }`);
+      }
+    });
   }
 
 }

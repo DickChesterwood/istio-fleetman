@@ -48,15 +48,6 @@ export class VehicleService  {
     this.subscription.next(newVehicle);
   }
 
-  doSomething() {
-    let newVehicle = new Vehicle("TEST",
-                                 42,
-                                 43,
-                                 "11",
-                                 "13");
-    this.subscription.next(newVehicle);
-  }
-
   updateCenterVehicle(centerVehicle: Vehicle) {
     this.centerVehicle.next(centerVehicle);
 

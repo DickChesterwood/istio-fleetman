@@ -19,7 +19,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
-import { PopUpModule } from './pop-up/pop-up.module';
 
 const stompConfig: StompConfig = {
      url: environment.gatewayUrl.replace('http','ws') + "/updates",
@@ -36,7 +35,6 @@ const appRoutes: Routes = [
   { path: '', component: MapComponent },
   { path: '**', component: StaticVehicleComponent }
 ];
-
 
 @NgModule({
   declarations: [
@@ -55,8 +53,7 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     HttpClientModule,
-    LeafletModule.forRoot(),
-    PopUpModule
+    LeafletModule.forRoot()
   ],
   providers: [VehicleService,
               StompService,

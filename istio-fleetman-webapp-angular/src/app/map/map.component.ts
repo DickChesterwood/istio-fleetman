@@ -19,7 +19,6 @@ export class MapComponent implements OnInit {
   map: Map;
   centerVehicle: string;
   selectedVehicleHistory;
-  popUpOpen = false;
 
   options = {
     layers: [
@@ -55,9 +54,7 @@ export class MapComponent implements OnInit {
                                                  shadowUrl: 'assets/marker-shadow.png'
                                                }),
                                    title: vehicle.name
-                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})}).on('click', function(e) {
-                                   this.popUpOpen = true;
-                                      });
+                                 }).bindTooltip(vehicle.name, {permanent:true,  offset: point({x: 0, y: 0})});
          this.markers.push(newMarker);
        }
        else
