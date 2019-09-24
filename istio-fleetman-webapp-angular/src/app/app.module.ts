@@ -16,8 +16,6 @@ import { HeaderComponent } from './header/header.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { DOCUMENT } from '@angular/platform-browser';
-
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
@@ -56,8 +54,7 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     HttpClientModule,
-    LeafletModule.forRoot(),
-    NgbModule.forRoot(),
+    LeafletModule.forRoot()
   ],
   providers: [VehicleService,
               StompService,
