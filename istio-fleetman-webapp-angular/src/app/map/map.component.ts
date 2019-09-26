@@ -65,8 +65,7 @@ export class MapComponent implements OnInit {
          this.selectedVehicleHistory.addLatLng(latLng(vehicle.lat, vehicle.lng));
          this.map.flyTo([vehicle.lat,vehicle.lng],
                            this.map.getZoom(), {
-         				   	       "animate": false
-         				  });
+         				   	       "animate": false });
        }
      });
 
@@ -86,7 +85,7 @@ export class MapComponent implements OnInit {
      this.vehicleService.centerVehicleHistory.subscribe(newHistory => {
        if (this.selectedVehicleHistory != null) this.selectedVehicleHistory.remove(this.map);
        if (newHistory ==null) return;
-       this.selectedVehicleHistory = polyline(newHistory, {weight:10, opacity:0.5, color:'red'});
+       this.selectedVehicleHistory = polyline(newHistory, {weight:5, opacity:0.5, color:'red'});
        this.selectedVehicleHistory.addTo(this.map);
      });
    }

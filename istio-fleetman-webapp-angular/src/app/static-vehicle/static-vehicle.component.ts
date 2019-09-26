@@ -14,14 +14,9 @@ export class StaticVehicleComponent implements OnInit {
   centerVehicle: string;
 
   ngOnInit() {
-    // TODO review this.centerVehicle = this.activatedRoute.snapshot.paramMap.get("vehicleName");
-    // TODO review this.centerVehicle = this.centerVehicle.replace(/_/g, ' ');
-
     this.vehicleService.centerVehicle.subscribe(vehicle => {
       if (vehicle == null) return;
       this.centerVehicle = vehicle.name;
-
-      console.log("Received an UPDATE!");
       this.router.navigateByUrl(`/vehicle/${vehicle.name  }`);
     });
   }

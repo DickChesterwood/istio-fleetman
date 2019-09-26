@@ -48,6 +48,7 @@ export class VehicleService  {
   }
 
   updateCenterVehicle(centerVehicle: Vehicle) {
+    this.centerVehicle.next(centerVehicle);
 
     if (centerVehicle == null)
     {
@@ -55,8 +56,6 @@ export class VehicleService  {
     }
     else
     {
-      this.centerVehicle.next(centerVehicle);
-
       // call API gateway, get the history for this vehicle.
       this.http.get(environment.gatewayUrl +"/history/" + centerVehicle.name)
          .subscribe( data => this.centerVehicleHistory.next(data));
