@@ -18,6 +18,11 @@ export class VehiclesComponent implements OnInit {
     this.vehicleService.subscription.subscribe(updatedVehicle => {
       if (updatedVehicle==null) return;
 
+      if (this.centeredVehicle == null)
+      {
+        this.centerVehicle(updatedVehicle);
+      }
+
       let foundIndex = this.vehicles.findIndex(existingVehicle => existingVehicle.name == updatedVehicle.name);
       if (foundIndex == -1)
       {
