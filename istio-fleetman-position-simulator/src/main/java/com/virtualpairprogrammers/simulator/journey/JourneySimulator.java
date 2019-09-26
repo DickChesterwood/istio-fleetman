@@ -113,12 +113,12 @@ public class JourneySimulator {
 	private VehiclePosition getVehicleDataFromRawString(String chosenVehicleName, String nextReport) {
 		String[] data = nextReport.split("\"");
 		String lat = data[1];
-		String longitude = data[3];
+		String lng = data[3];
 
 		VehiclePosition report = new VehicleBuilder()
 				                  .withName(chosenVehicleName)
 				                  .withLat(lat)
-				                  .withLng(longitude)
+				                  .withLng(lng)
 				                  .withTimestamp(new java.util.Date())
 				                  .build();
 		return report;

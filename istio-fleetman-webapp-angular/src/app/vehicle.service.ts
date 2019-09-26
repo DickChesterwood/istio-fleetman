@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class VehicleService  {
 
-  subscription: BehaviorSubject<Vehicle>;
+  subscription: BehaviorSubject<any>;
   centerVehicle: BehaviorSubject<Vehicle>;
   centerVehicleHistory: BehaviorSubject<any>;
 
@@ -41,26 +41,21 @@ export class VehicleService  {
     // update vehicle and notify
     let newVehicle = new Vehicle(body.name,
                                  Number(body.lat),
-                                 Number(body.longitude),
+                                 Number(body.lng),
                                  body.timestamp,
                                  body.speed);
     this.subscription.next(newVehicle);
   }
 
   updateCenterVehicle(centerVehicle: Vehicle) {
-
-    if (centerVehicle == null)
-    {
-      this.centerVehicleHistory.next(null);
-    }
-    else
-    {
-      // call API gateway, get the history for this vehicle.
-      this.http.get(environment.gatewayUrl +"/history/" + centerVehicle.name)
-         .subscribe( data => this.centerVehicleHistory.next(data));
-    }
+    this.http.get(environment.gatewayUrl +"/history/" + centerVehicle.name)
+       .subscribe( data => this.centerVehicleHistory.next(data));
     this.centerVehicle.next(centerVehicle);
+  }
 
+  getLastReportFor(vehicle: String) {
+    this.http.get(environment.gatewayUrl +"/vehicles/" + vehicle)
+       .subscribe( data => this.subscription.next(data));
   }
 
 }

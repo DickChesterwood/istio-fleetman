@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from '../vehicle';
 import { VehicleService } from '../vehicle.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicles',
@@ -13,7 +12,7 @@ export class VehiclesComponent implements OnInit {
   vehicles: Vehicle[] = [];
   centeredVehicle: string;
 
-  constructor(private vehicleService: VehicleService, private activatedRoute: Router) { }
+  constructor(private vehicleService: VehicleService) { }
 
   ngOnInit() {
     this.vehicleService.subscription.subscribe(updatedVehicle => {
@@ -31,18 +30,6 @@ export class VehiclesComponent implements OnInit {
       {
         this.vehicles[foundIndex] = updatedVehicle;
       }
-
-      // case #14
-      if (this.centeredVehicle == null)
-      {
-        let url = decodeURIComponent(this.activatedRoute.url);
-        let requiredCenteredVehicle = url.split("/").slice(-1)[0];
-        if (requiredCenteredVehicle == updatedVehicle.name)
-        {
-          this.centerVehicle(updatedVehicle);
-        }
-      }
-
     });
   }
 

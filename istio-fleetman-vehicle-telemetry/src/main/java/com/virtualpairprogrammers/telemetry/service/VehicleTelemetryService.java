@@ -47,8 +47,8 @@ public class VehicleTelemetryService
 		
 		BigDecimal timeInSeconds = new BigDecimal(timeInMillis / 1000.0);
 				
-		GlobalPosition pointA = new GlobalPosition(posA.getLat().doubleValue(), posA.getLongitude().doubleValue(), 0.0);
-		GlobalPosition pointB = new GlobalPosition(posB.getLat().doubleValue(), posB.getLongitude().doubleValue(), 0.0);
+		GlobalPosition pointA = new GlobalPosition(posA.getLat().doubleValue(), posA.getLng().doubleValue(), 0.0);
+		GlobalPosition pointB = new GlobalPosition(posB.getLat().doubleValue(), posB.getLng().doubleValue(), 0.0);
 	
 		double distance = geoCalc.calculateGeodeticCurve(Ellipsoid.WGS84, pointA, pointB).getEllipsoidalDistance(); // Distance between Point A and Point B
 		BigDecimal distanceInMetres = new BigDecimal (""+ distance);

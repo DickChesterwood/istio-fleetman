@@ -33,6 +33,5 @@ public class PropagateHeadersInterceptor implements RequestInterceptor {
 				System.out.println("Added custom header");
 			}
 		}
-		System.out.println("Done. Now check the onward service!");
 	}
 }

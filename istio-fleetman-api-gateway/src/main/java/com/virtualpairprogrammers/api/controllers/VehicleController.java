@@ -52,12 +52,20 @@ public class VehicleController
 		Collection<VehiclePosition> vehicles = externalService.getHistoryFor(vehicleName);
 		for (VehiclePosition next: vehicles)
 		{
-			LatLong position = new LatLong(next.getLat(), next.getLongitude()); 
+			LatLong position = new LatLong(next.getLat(), next.getLng()); 
 			results.add(position);
 		}
 		Collections.reverse((List<?>) results);
 		return results;
 	}
+	
+	@GetMapping("/vehicles/{vehicleName}")
+	@ResponseBody
+	@CrossOrigin(origins = "*")
+	public VehiclePosition getLastReportFor(@PathVariable("vehicleName") String vehicleName)
+	{
+		return externalService.getLastReportFor(vehicleName);
+	}	
 
 	@Scheduled(fixedRate=2000)
 	public void updatePositions()

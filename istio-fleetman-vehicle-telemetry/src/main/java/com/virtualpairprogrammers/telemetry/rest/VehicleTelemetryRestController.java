@@ -27,7 +27,6 @@ public class VehicleTelemetryRestController
 	@RequestMapping(method=RequestMethod.GET, value="/vehicles/{vehicleName}")
 	public BigDecimal getSpeedFor(@PathVariable("vehicleName") String vehicleName)
 	{
-		return new BigDecimal("472");
-		//return this.service.getSpeedFor(vehicleName);
+		return this.service.getSpeedFor(vehicleName);
 	}
 }

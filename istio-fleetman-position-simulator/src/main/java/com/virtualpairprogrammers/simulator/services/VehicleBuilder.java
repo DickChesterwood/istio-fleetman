@@ -56,7 +56,7 @@ public class VehicleBuilder
 	public VehicleBuilder withVehiclePostion(VehiclePosition data) {
 		this.name = data.getName();
 		this.lat = data.getLat();
-		this.lng = data.getLongitude();
+		this.lng = data.getLng();
 		this.timestamp = data.getTimestamp();
 		this.speed = data.getSpeed();
 

@@ -15,7 +15,7 @@ public class VehiclePosition implements Comparable<VehiclePosition>
 {
 	private String name;
 	private BigDecimal lat;
-	private BigDecimal longitude;
+	private BigDecimal lng;
 	
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone="UTC")
 	private Date timestamp;
@@ -68,8 +68,8 @@ public class VehiclePosition implements Comparable<VehiclePosition>
 		return this.lat;
 	}
 
-	public BigDecimal getLongitude() {
-		return this.longitude;
+	public BigDecimal getLng() {
+		return this.lng;
 	}
 
 	public Date getTimestamp() {

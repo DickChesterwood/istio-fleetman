@@ -20,4 +20,7 @@ public interface RemotePositionMicroserviceCalls
 
 	@RequestMapping(method=RequestMethod.GET, value="/history/{vehicleName}")
 	public Collection<VehiclePosition> getHistoryFor(@PathVariable("vehicleName") String vehicleName);
+
+	@RequestMapping(method=RequestMethod.GET, value="/vehicles/{vehicleName}")
+	public VehiclePosition getLastReportFor(@PathVariable("vehicleName") String vehicleName);
 }

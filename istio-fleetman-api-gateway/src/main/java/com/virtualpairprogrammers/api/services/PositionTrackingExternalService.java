@@ -23,5 +23,9 @@ public class PositionTrackingExternalService
 	public Collection<VehiclePosition> getHistoryFor(String vehicleName) {
 		return remoteService.getHistoryFor(vehicleName);
 	}
+
+	public VehiclePosition getLastReportFor(String vehicleName) {
+		return remoteService.getLastReportFor(vehicleName);
+	}
 		
 }

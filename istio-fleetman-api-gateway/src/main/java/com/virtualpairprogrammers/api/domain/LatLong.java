@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LatLong
 {
 	private BigDecimal lat;
-	private BigDecimal lng;;
+	private BigDecimal lng;
 	
 	public BigDecimal getLat() {
 		return lat;
