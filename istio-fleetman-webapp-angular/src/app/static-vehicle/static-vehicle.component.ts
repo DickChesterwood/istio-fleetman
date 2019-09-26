@@ -17,7 +17,7 @@ export class StaticVehicleComponent implements OnInit {
     this.vehicleService.centerVehicle.subscribe(vehicle => {
       if (vehicle == null) return;
       this.centerVehicle = vehicle.name;
-      this.router.navigateByUrl(`/vehicle/${vehicle.name  }`);
+      this.router.navigateByUrl(`/vehicle/${vehicle.name}`);
     });
   }
 

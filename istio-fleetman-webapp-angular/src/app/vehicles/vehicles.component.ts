@@ -13,11 +13,12 @@ export class VehiclesComponent implements OnInit {
   vehicles: Vehicle[] = [];
   centeredVehicle: string;
 
-  constructor(private vehicleService: VehicleService, private router: Router) { }
+  constructor(private vehicleService: VehicleService, private activatedRoute: Router) { }
 
   ngOnInit() {
     this.vehicleService.subscription.subscribe(updatedVehicle => {
       if (updatedVehicle==null) return;
+
       let foundIndex = this.vehicles.findIndex(existingVehicle => existingVehicle.name == updatedVehicle.name);
       if (foundIndex == -1)
       {
@@ -30,20 +31,23 @@ export class VehiclesComponent implements OnInit {
       {
         this.vehicles[foundIndex] = updatedVehicle;
       }
+
+      // case #14
+      if (this.centeredVehicle == null)
+      {
+        let url = decodeURIComponent(this.activatedRoute.url);
+        let requiredCenteredVehicle = url.split("/").slice(-1)[0];
+        if (requiredCenteredVehicle == updatedVehicle.name)
+        {
+          this.centerVehicle(updatedVehicle);
+        }
+      }
+
     });
   }
 
   centerVehicle(vehicle: Vehicle) {
-    // allow to "deselect"
-    if (this.centeredVehicle == vehicle.name)
-    {
-      this.centeredVehicle = null
-      this.vehicleService.updateCenterVehicle(null);
-    }
-    else
-    {
-      this.centeredVehicle = vehicle.name;
-      this.vehicleService.updateCenterVehicle(vehicle);
-    }
+    this.centeredVehicle = vehicle.name;
+    this.vehicleService.updateCenterVehicle(vehicle);
   }
 }
