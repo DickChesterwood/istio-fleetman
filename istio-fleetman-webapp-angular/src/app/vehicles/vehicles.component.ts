@@ -15,21 +15,6 @@ export class VehiclesComponent implements OnInit {
 
   constructor(private vehicleService: VehicleService, private router: Router) { }
 
-  openPopUp() {
-      this.mapVisible = !this.mapVisible;
-      if (this.mapVisible)
-      {
-        this.router.navigateByUrl("/");
-        // TODO - need to fly to selecvted vehicle
-      }
-      else
-      {
-        this.router.navigateByUrl("/vehicle" + this.centeredVehicle);
-      }
-
-      console.log("set mv to " + this.mapVisible);
-  }
-
   ngOnInit() {
     this.vehicleService.subscription.subscribe(updatedVehicle => {
       if (updatedVehicle==null) return;
@@ -60,17 +45,5 @@ export class VehiclesComponent implements OnInit {
       this.centeredVehicle = vehicle.name;
       this.vehicleService.updateCenterVehicle(vehicle);
     }
-
-    if (!this.mapVisible)
-    {
-      this.router.navigateByUrl(`/vehicle/${vehicle.name  }`);
-    }
-    console.log("done with visible " + this.mapVisible);
-  }
-
-  update() {
-    this.vehicles.sort( (a:Vehicle,b:Vehicle) => {
-      return (a.name > b.name) ? -1 : 1;
-    });
   }
 }

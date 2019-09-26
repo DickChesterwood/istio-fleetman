@@ -7,13 +7,17 @@ html, body, #container {
 #sidebar {
   width: 300px;
   overflow: auto;
-	max-height:calc(100% - 56px);
+	height:calc(100% - 56px);
   float: left;
+  border-right: 2px solid black;
+  border: 5px solid black;
 }
 #mapid {
   width: auto;
   overflow: hidden;
-	min-height:calc(100% - 56px);
+	height:calc(50% - 56px);
+  border-left: 3px solid black;
+  border: 5px solid black;
 }
 
 .sidebar-wrapper {

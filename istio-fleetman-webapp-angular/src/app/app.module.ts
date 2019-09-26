@@ -32,8 +32,6 @@ const stompConfig: StompConfig = {
 
 const appRoutes: Routes = [
   { path: 'vehicle/:vehicleName', component: StaticVehicleComponent },
-  { path: '', component: MapComponent },
-  { path: '**', component: StaticVehicleComponent }
 ];
 
 @NgModule({
