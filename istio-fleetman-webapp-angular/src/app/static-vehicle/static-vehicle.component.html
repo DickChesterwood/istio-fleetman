@@ -4,14 +4,10 @@
   </div>
 
   <div id="dataArea">
-    <p>Last seen at TODO, TODO</p>
-    <p>Driver: TODO</p>
-    <div id="photo">
-        <p>Driver photo to appear here</p>
+    <p>Last seen at {{centerVehicle.lat}}, {{centerVehicle.lng}}</p>
+    <p *ngIf="currentDriver">Driver: {{currentDriver.name}}</p>
+    <div *ngIf="currentDriver" id="photo">
+        <img src="{{currentDriver.photo}}"/>
     </div>
-  </div>
-
-  <div id="smallMapArea">
-    <p>Map will appear here...</p>
   </div>
 </div>

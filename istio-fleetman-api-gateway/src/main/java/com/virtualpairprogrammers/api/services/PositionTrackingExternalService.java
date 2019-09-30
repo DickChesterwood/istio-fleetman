@@ -14,6 +14,9 @@ public class PositionTrackingExternalService
 	@Autowired
 	private RemotePositionMicroserviceCalls remoteService;
 	
+	@Autowired
+	private RemoteStaffMicroserviceCalls remoteStaffService;
+	
 	public Collection<VehiclePosition> getAllUpdatedPositionsSince(Date since)
 	{
 		Collection<VehiclePosition> results = remoteService.getAllLatestPositionsSince(since);
@@ -26,6 +29,12 @@ public class PositionTrackingExternalService
 
 	public VehiclePosition getLastReportFor(String vehicleName) {
 		return remoteService.getLastReportFor(vehicleName);
+	}
+
+	public String getDriverFor(String vehicleName) {
+		String response = remoteStaffService.getDriverFor(vehicleName);
+		System.out.println("The response is going to be " + response);
+		return response;
 	}
 		
 }

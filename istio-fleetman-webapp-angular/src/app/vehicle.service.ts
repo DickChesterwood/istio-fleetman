@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Vehicle } from './vehicle';
+import { Staff } from './staff';
 import { Observable ,  Subscription, BehaviorSubject ,  of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -17,6 +18,7 @@ export class VehicleService  {
   subscription: BehaviorSubject<any>;
   centerVehicle: BehaviorSubject<Vehicle>;
   centerVehicleHistory: BehaviorSubject<any>;
+  currentDriver: BehaviorSubject<any>;
 
   constructor(private _stompService: StompService, private http: HttpClient) {
     // Store local reference to Observable
@@ -25,6 +27,7 @@ export class VehicleService  {
     this.subscription = new BehaviorSubject(null);
     this.centerVehicle = new BehaviorSubject(null);
     this.centerVehicleHistory = new BehaviorSubject(null);
+    this.currentDriver = new BehaviorSubject(null);
   }
 
   subscribe() {
@@ -34,7 +37,7 @@ export class VehicleService  {
     messages.subscribe(this.onMessage);
   }
 
-  /** Consume a message from the _stompService */
+  /** This is responding to an incoming websocket message, an updated vehicle report */
   onMessage = (message: Message) => {
     let body = JSON.parse(message.body);
 
@@ -49,13 +52,29 @@ export class VehicleService  {
 
   updateCenterVehicle(centerVehicle: Vehicle) {
     this.http.get(environment.gatewayUrl +"/history/" + centerVehicle.name)
-       .subscribe( data => this.centerVehicleHistory.next(data));
+       .subscribe( data => this.centerVehicleHistory.next(data),
+                   error => console.log("OH NO ERROR!!!!!!!!"));
     this.centerVehicle.next(centerVehicle);
   }
 
   getLastReportFor(vehicle: String) {
     this.http.get(environment.gatewayUrl +"/vehicles/" + vehicle)
-       .subscribe( data => this.subscription.next(data));
+       .subscribe( data => this.subscription.next(data),
+                   error => console.log("OH NO ERROR!!!!!!!!"));
+  }
+
+  getStaffDriverFor(vehicle: String) {
+    // TODO set the icon to spinning disks?
+    let dummy = new Staff();
+    dummy.name="Error";
+    this.currentDriver.next(new Staff());
+    this.http.get(environment.gatewayUrl +"/vehicles/driver/" + vehicle)
+    .subscribe( data => {
+                            this.currentDriver.next(data);
+                            console.log("Got driver data for " + Object.keys(data));},
+
+                error => console.log(error.message));
+
   }
 
 }

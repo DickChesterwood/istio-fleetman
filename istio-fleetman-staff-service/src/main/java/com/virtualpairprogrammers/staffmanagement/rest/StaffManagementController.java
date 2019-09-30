@@ -1,20 +1,24 @@
 package com.virtualpairprogrammers.staffmanagement.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.virtualpairprogrammers.staffmanagement.domain.StaffRecord;
+import com.virtualpairprogrammers.staffmanagement.services.StaffService;
 
 @RestController
 public class StaffManagementController {
 
-	@RequestMapping(method=RequestMethod.GET, value="/driver/{vehicleName}")
+	@Autowired
+	private StaffService staffService;
+
+	@RequestMapping(method=RequestMethod.GET, value="/driver/{vehicleName}", produces="application/json")
 	public StaffRecord getDriverAssignedTo(@PathVariable String vehicleName)
 	{
-		// TODO: Call onward service (photo service) to get photo info
-		return new StaffRecord();
+		return staffService.getDriverDetailsFor(vehicleName);
 	}
 	
 }

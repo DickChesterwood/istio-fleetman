@@ -66,6 +66,14 @@ public class VehicleController
 	{
 		return externalService.getLastReportFor(vehicleName);
 	}	
+	
+	@GetMapping("/vehicles/driver/{vehicleName}")
+	@ResponseBody
+	@CrossOrigin(origins = "*")
+	public String getDriverFor(@PathVariable("vehicleName") String vehicleName)
+	{
+		return externalService.getDriverFor(vehicleName);
+	}		
 
 	@Scheduled(fixedRate=2000)
 	public void updatePositions()
