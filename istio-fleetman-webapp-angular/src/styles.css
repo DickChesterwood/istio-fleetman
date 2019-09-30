@@ -3,25 +3,3 @@ html, body, #container {
   height: 100%;
   width: 100%;
 }
-
-#sidebar {
-  width: 300px;
-  overflow: auto;
-	height:calc(100% - 56px);
-  float: left;
-  border-right: 2px solid black;
-  border: 5px solid black;
-}
-#mapid {
-  width: auto;
-  overflow: hidden;
-	height:calc(50% - 56px);
-  border-left: 3px solid black;
-  border: 5px solid black;
-}
-
-.sidebar-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}

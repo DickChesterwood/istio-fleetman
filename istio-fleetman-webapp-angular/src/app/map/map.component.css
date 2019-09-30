@@ -1,3 +1,8 @@
 #mapid {
-
+  width: auto;
+  overflow: hidden;
+	height:calc(100% - 210px);
+  border-left: 3px solid black;
+  border: 1px solid black;
 }
+ 
