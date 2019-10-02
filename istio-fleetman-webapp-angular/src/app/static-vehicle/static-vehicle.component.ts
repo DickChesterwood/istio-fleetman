@@ -33,6 +33,12 @@ export class StaticVehicleComponent implements OnInit {
       this.vehicleService.getStaffDriverFor(vehicle.name);
     });
 
+    this.vehicleService.subscription.subscribe(vehicle => {
+      if (vehicle == null) return;
+      this.centerVehicle.lat = vehicle.lat;
+      this.centerVehicle.lng = vehicle.lng;
+    });
+
     // Case #14, start tracking vehicle immediately based on last known position
     let requiredCenteredVehicle = this.activatedRoute.snapshot.paramMap.get("vehicleName");
     this.vehicleService.getLastReportFor(requiredCenteredVehicle);
