@@ -1,4 +1,4 @@
-package com.virtualpairprogrammers.tracker.config;
+package com.virtualpairprogrammers.staffmanagement.config;
 
 import java.util.Enumeration;
 
