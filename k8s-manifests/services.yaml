@@ -49,7 +49,31 @@ metadata:
   name: fleetman-vehicle-telemetry
 spec:
   selector:
-    app: vehicle-telemetry #  I THINK This is redundant in Istio.
+    app: vehicle-telemetry
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-staff-service
+spec:
+  selector:
+    app: staff-service
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-photo-service
+spec:
+  selector:
+    app: photo-service
   ports:
     - name: http
       port: 8080

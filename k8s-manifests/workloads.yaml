@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:3-delete
+        image: richardchesterwood/istio-fleetman-position-simulator:4
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:3-delete
+        image: richardchesterwood/istio-fleetman-position-tracker:4
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:3-delete
+        image: richardchesterwood/istio-fleetman-api-gateway:4
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:3 # TODO!
+        image: richardchesterwood/istio-fleetman-webapp-angular:4
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -107,7 +107,51 @@ spec:
     spec:
       containers:
       - name: vehicle-telemtry
-        image: richardchesterwood/istio-fleetman-vehicle-telemetry:3-delete
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:4
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staff-service
+spec:
+  selector:
+    matchLabels:
+      app: staff-service
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: staff-service
+    spec:
+      containers:
+      - name: staff-service
+        image: richardchesterwood/istio-fleetman-staff-service:4
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-service
+spec:
+  selector:
+    matchLabels:
+      app: photo-service
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: photo-service
+    spec:
+      containers:
+      - name: photo-service
+        image: richardchesterwood/istio-fleetman-photo-service:4
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
