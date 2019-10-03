@@ -19,6 +19,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 import { StaticVehicleComponent } from './static-vehicle/static-vehicle.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OverlayModule } from "@angular/cdk/overlay";
+import { MatSnackBarModule } from '@angular/material';
+
 
 const stompConfig: StompConfig = {
      url: environment.gatewayUrl.replace('http','ws') + "/updates",
@@ -53,9 +58,13 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     HttpClientModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    BrowserAnimationsModule,
+    OverlayModule,
+    MatSnackBarModule  
   ],
   providers: [VehicleService,
+              MatSnackBar,
               StompService,
               {
                  provide: StompConfig,

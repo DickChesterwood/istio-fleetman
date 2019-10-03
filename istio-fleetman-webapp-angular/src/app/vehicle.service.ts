@@ -11,6 +11,7 @@ import {StompService} from '@stomp/ng2-stompjs';
 import {  LatLng } from 'leaflet';
 
 import { environment } from '../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class VehicleService  {
@@ -20,7 +21,7 @@ export class VehicleService  {
   centerVehicleHistory: BehaviorSubject<any>;
   currentDriver: BehaviorSubject<any>;
 
-  constructor(private _stompService: StompService, private http: HttpClient) {
+  constructor(private _stompService: StompService, private http: HttpClient, private snackBar: MatSnackBar) {
     // Store local reference to Observable
     // for use with template ( | async )
     this.subscribe();
@@ -53,14 +54,14 @@ export class VehicleService  {
   updateCenterVehicle(centerVehicle: Vehicle) {
     this.http.get(environment.gatewayUrl +"/history/" + centerVehicle.name)
        .subscribe( data => this.centerVehicleHistory.next(data),
-                   error => console.log("OH NO ERROR!!!!!!!!"));
+                   error => this.snackBar.open("Error code " + error.status + " occured. " + error.error.message, 'Dismiss', { duration: 5000 } ));
     this.centerVehicle.next(centerVehicle);
   }
 
   getLastReportFor(vehicle: String) {
     this.http.get(environment.gatewayUrl +"/vehicles/" + vehicle)
        .subscribe( data => this.subscription.next(data),
-                   error => console.log("OH NO ERROR!!!!!!!!"));
+       error => this.snackBar.open("Error code " + error.status + " occured. " + error.error.message, 'Dismiss', { duration: 5000 } ));
   }
 
   getStaffDriverFor(vehicle: String) {
@@ -73,7 +74,7 @@ export class VehicleService  {
                             this.currentDriver.next(data);
                             console.log("Got driver data for " + Object.keys(data));},
 
-                error => console.log(error.message));
+                error => this.snackBar.open("Error code " + error.status + " occured. " + error.error.message, 'Dismiss', { duration: 5000 } ));
 
   }
 
