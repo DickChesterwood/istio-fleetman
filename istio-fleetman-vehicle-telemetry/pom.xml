@@ -69,6 +69,36 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration><executable>true</executable></configuration>
 			</plugin>
+ 			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.21.0</version>
+			
+				<configuration>			
+			        <!-- <dockerHost>unix:///var/run/docker.sock</dockerHost> -->
+			        <dockerHost>tcp://192.168.99.144:2376</dockerHost>  
+                    <certPath>C:\cygwin64\home\Richard\.minikube\certs</certPath>
+			
+			        <verbose>true</verbose>
+        			<extensions>true</extensions>
+			        		     
+					<images>
+						<image>
+							<name>richardchesterwood/istio-fleetman-vehicle-telemetry</name>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+			
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>4</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>								
+			</plugin>					
 		</plugins>
 		
 		<resources>
