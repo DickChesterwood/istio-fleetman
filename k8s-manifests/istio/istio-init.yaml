@@ -1,3 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-system
 ---
 # Source: istio-init/templates/configmap-crd-10.yaml
 apiVersion: v1

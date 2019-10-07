@@ -1,6 +1,14 @@
 # Custom setup for Istio, runnable within Minikube. Not for production use (the requests are likely too small).
 # Ensure this file is referenced "to the right of" the standard values.yaml, to ensure these values take precedence. 
 
+gateways:
+  istio-ingressgateway:
+    autoscaleEnabled: false
+  istio-egressgateway:
+    autoscaleEnabled: false
+  istio-ilbgateway:
+    autoscaleEnabled: false
+
 tracing:
   enabled: true
   ingress:
@@ -24,6 +32,7 @@ global:
 
 pilot:
   traceSampling: 100
+  autoscaleEnabled: false
   resources:
     requests:
       cpu: 10m
@@ -35,6 +44,9 @@ mixer:
       requests:
         memory: 100Mi
         cpu: 50m
+    autoscaleEnabled: false
+  policy:
+    autoscaleEnabled: false
 
 grafana:
   enabled: true
