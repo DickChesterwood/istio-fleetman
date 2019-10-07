@@ -5,12 +5,12 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-galley
-  namespace: default
+  namespace: istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: galley
 spec:
 
@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app: galley
-      release: release-name
+      release: istio
       istio: galley
 
 ---
@@ -28,11 +28,11 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-ingressgateway
-  namespace: default
+  namespace: istio-system
   labels:
     chart: gateways
     heritage: Tiller
-    release: release-name
+    release: istio
     app: istio-ingressgateway
     istio: ingressgateway
 spec:
@@ -40,7 +40,7 @@ spec:
   minAvailable: 1
   selector:
     matchLabels:
-      release: release-name
+      release: istio
       app: istio-ingressgateway
       istio: ingressgateway
 ---
@@ -52,12 +52,12 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-policy
-  namespace: default
+  namespace: istio-system
   labels:
     app: policy
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     version: 1.3.0
     istio: mixer
     istio-mixer-type: policy
@@ -67,7 +67,7 @@ spec:
   selector:
     matchLabels:
       app: policy
-      release: release-name
+      release: istio
       istio: mixer
       istio-mixer-type: policy
 ---
@@ -75,12 +75,12 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-telemetry
-  namespace: default
+  namespace: istio-system
   labels:
     app: telemetry
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     version: 1.3.0
     istio: mixer
     istio-mixer-type: telemetry
@@ -90,7 +90,7 @@ spec:
   selector:
     matchLabels:
       app: telemetry
-      release: release-name
+      release: istio
       istio: mixer
       istio-mixer-type: telemetry
 ---
@@ -102,12 +102,12 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-pilot
-  namespace: default
+  namespace: istio-system
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: pilot
 spec:
 
@@ -115,7 +115,7 @@ spec:
   selector:
     matchLabels:
       app: pilot
-      release: release-name
+      release: istio
       istio: pilot
 
 ---
@@ -125,10 +125,10 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-sidecar-injector
-  namespace: default
+  namespace: istio-system
   labels:
     app: sidecarInjectorWebhook
-    release: release-name
+    release: istio
     istio: sidecar-injector
 spec:
 
@@ -136,7 +136,7 @@ spec:
   selector:
     matchLabels:
       app: sidecarInjectorWebhook
-      release: release-name
+      release: istio
       istio: sidecar-injector
 ---
 # Source: istio/charts/galley/templates/configmap.yaml
@@ -144,12 +144,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-galley-configuration
-  namespace: default
+  namespace: istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: galley
 data:
   validatingwebhookconfiguration.yaml: |-    
@@ -161,14 +161,14 @@ data:
         app: galley
         chart: galley
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: galley
     webhooks:
       - name: pilot.validation.istio.io
         clientConfig:
           service:
             name: istio-galley
-            namespace: default
+            namespace: istio-system
             path: "/admitpilot"
           caBundle: ""
         rules:
@@ -222,7 +222,7 @@ data:
         clientConfig:
           service:
             name: istio-galley
-            namespace: default
+            namespace: istio-system
             path: "/admitmixer"
           caBundle: ""
         rules:
@@ -276,12 +276,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-custom-resources
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   custom-resources.yaml: |-    
@@ -289,12 +289,12 @@ data:
     kind: Policy
     metadata:
       name: grafana-ports-mtls-disabled
-      namespace: default
+      namespace: istio-system
       labels:
         app: grafana
         chart: grafana
         heritage: Tiller
-        release: release-name
+        release: istio
     spec:
       targets:
       - name: grafana
@@ -316,13 +316,13 @@ data:
     if [ "$?" -eq 0 ]; then
         echo "istio-galley validatingwebhookconfiguration found - waiting for istio-galley deployment to be ready"
         while true; do
-            kubectl -n default get deployment istio-galley 2>/dev/null
+            kubectl -n istio-system get deployment istio-galley 2>/dev/null
             if [ "$?" -eq 0 ]; then
                 break
             fi
             sleep 1
         done
-        kubectl -n default rollout status deployment istio-galley
+        kubectl -n istio-system rollout status deployment istio-galley
         if [ "$?" -ne 0 ]; then
             echo "istio-galley deployment rollout status check failed"
             exit 1
@@ -340,12 +340,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-citadel-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   citadel-dashboard.json: '{
@@ -1442,12 +1442,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-galley-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   galley-dashboard.json: '{
@@ -3275,12 +3275,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-mesh-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   istio-mesh-dashboard.json: '{
@@ -4514,12 +4514,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-performance-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   istio-performance-dashboard.json: '{
@@ -6350,12 +6350,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-service-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   istio-service-dashboard.json: '{
@@ -8965,12 +8965,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-workload-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   istio-workload-dashboard.json: '{
@@ -11282,12 +11282,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-mixer-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   mixer-dashboard.json: '{
@@ -13104,12 +13104,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-pilot-dashboard
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   pilot-dashboard.json: '{
@@ -14711,12 +14711,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: grafana
 data:
   datasources.yaml: |
@@ -14749,15 +14749,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kiali
-  namespace: default
+  namespace: istio-system
   labels:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 data:
   config.yaml: |
-    istio_namespace: default
+    istio_namespace: istio-system
     auth:
       strategy: login
     server:
@@ -14777,12 +14777,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus
-  namespace: default
+  namespace: istio-system
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 data:
   prometheus.yml: |-
     global:
@@ -14794,7 +14794,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -14830,7 +14830,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
 
       relabel_configs:
@@ -14843,7 +14843,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -14855,7 +14855,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -14867,7 +14867,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -14879,7 +14879,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - default
+          - istio-system
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -15060,12 +15060,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-security-custom-resources
-  namespace: default
+  namespace: istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: citadel
 data:
   custom-resources.yaml: |-    
@@ -15078,7 +15078,7 @@ data:
         app: security
         chart: security
         heritage: Tiller
-        release: release-name
+        release: istio
     spec:
       peers:
       - mtls:
@@ -15099,13 +15099,13 @@ data:
     if [ "$?" -eq 0 ]; then
         echo "istio-galley validatingwebhookconfiguration found - waiting for istio-galley deployment to be ready"
         while true; do
-            kubectl -n default get deployment istio-galley 2>/dev/null
+            kubectl -n istio-system get deployment istio-galley 2>/dev/null
             if [ "$?" -eq 0 ]; then
                 break
             fi
             sleep 1
         done
-        kubectl -n default rollout status deployment istio-galley
+        kubectl -n istio-system rollout status deployment istio-galley
         if [ "$?" -ne 0 ]; then
             echo "istio-galley deployment rollout status check failed"
             exit 1
@@ -15123,12 +15123,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio
-  namespace: default
+  namespace: istio-system
   labels:
     app: istio
     chart: istio
     heritage: Tiller
-    release: release-name
+    release: istio
 data:
   mesh: |-
     # Set the following variable to true to disable policy checks by the Mixer.
@@ -15156,8 +15156,8 @@ data:
     accessLogEncoding: 'TEXT'
 
     enableEnvoyAccessLogService: false
-    mixerCheckServer: istio-policy.default.svc.cluster.local:9091
-    mixerReportServer: istio-telemetry.default.svc.cluster.local:9091
+    mixerCheckServer: istio-policy.istio-system.svc.cluster.local:9091
+    mixerReportServer: istio-telemetry.istio-system.svc.cluster.local:9091
     # policyCheckFailOpen allows traffic in cases when the mixer policy service cannot be reached.
     # Default is false which means the traffic is denied when the client is unable to connect to Mixer.
     policyCheckFailOpen: false
@@ -15200,9 +15200,9 @@ data:
       enabled: true
     # The namespace to treat as the administrative root namespace for istio
     # configuration.
-    rootNamespace: default
+    rootNamespace: istio-system
     configSources:
-    - address: istio-galley.default.svc:9901
+    - address: istio-galley.istio-system.svc:9901
 
     defaultConfig:
       #
@@ -15249,13 +15249,13 @@ data:
       tracing:
         zipkin:
           # Address of the Zipkin collector
-          address: zipkin.default:9411
+          address: zipkin.istio-system:9411
       #
       # Mutual TLS authentication between sidecars and istio control plane.
       controlPlaneAuthPolicy: NONE
       #
       # Address where istio Pilot service is running
-      discoveryAddress: istio-pilot.default:15010
+      discoveryAddress: istio-pilot.istio-system:15010
 
   # Configuration file for the mesh networks to be used by the Split Horizon EDS.
   meshNetworks: |-
@@ -15268,12 +15268,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-sidecar-injector
-  namespace: default
+  namespace: istio-system
   labels:
     app: istio
     chart: istio
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 data:
   values: |-
@@ -15675,12 +15675,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-galley-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/gateways/templates/serviceaccount.yaml
@@ -15689,12 +15689,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-ingressgateway-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: istio-ingressgateway
     chart: gateways
     heritage: Tiller
-    release: release-name
+    release: istio
 ---
 
 
@@ -15704,22 +15704,22 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-grafana-post-install-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-grafana-post-install-default
+  name: istio-grafana-post-install-istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: ["authentication.istio.io"] # needed to create default authn policy
   resources: ["*"]
@@ -15728,26 +15728,26 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-grafana-post-install-role-binding-default
+  name: istio-grafana-post-install-role-binding-istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-grafana-post-install-default
+  name: istio-grafana-post-install-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-grafana-post-install-account
-    namespace: default
+    namespace: istio-system
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: istio-grafana-post-install-1.3.0
-  namespace: default
+  namespace: istio-system
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15755,7 +15755,7 @@ metadata:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   template:
     metadata:
@@ -15764,7 +15764,7 @@ spec:
         app: istio-grafana
         chart: grafana
         heritage: Tiller
-        release: release-name
+        release: istio
     spec:
       serviceAccountName: istio-grafana-post-install-account
       containers:
@@ -15819,12 +15819,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kiali-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/mixer/templates/serviceaccount.yaml
@@ -15833,12 +15833,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-mixer-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/pilot/templates/serviceaccount.yaml
@@ -15846,12 +15846,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-pilot-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/prometheus/templates/serviceaccount.yaml
@@ -15859,12 +15859,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: prometheus
-  namespace: default
+  namespace: istio-system
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/security/templates/cleanup-secrets.yaml
@@ -15881,7 +15881,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-cleanup-secrets-service-account
-  namespace: default
+  namespace: istio-system
   annotations:
     "helm.sh/hook": post-delete
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15890,12 +15890,12 @@ metadata:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-cleanup-secrets-default
+  name: istio-cleanup-secrets-istio-system
   annotations:
     "helm.sh/hook": post-delete
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15904,7 +15904,7 @@ metadata:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -15913,7 +15913,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-cleanup-secrets-default
+  name: istio-cleanup-secrets-istio-system
   annotations:
     "helm.sh/hook": post-delete
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15922,21 +15922,21 @@ metadata:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-cleanup-secrets-default
+  name: istio-cleanup-secrets-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-cleanup-secrets-service-account
-    namespace: default
+    namespace: istio-system
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: istio-cleanup-secrets-1.3.0
-  namespace: default
+  namespace: istio-system
   annotations:
     "helm.sh/hook": post-delete
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15945,7 +15945,7 @@ metadata:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   template:
     metadata:
@@ -15954,7 +15954,7 @@ spec:
         app: security
         chart: security
         heritage: Tiller
-        release: release-name
+        release: istio
     spec:
       serviceAccountName: istio-cleanup-secrets-service-account
       containers:
@@ -16012,22 +16012,22 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-security-post-install-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: istio-security-post-install-default
+  name: istio-security-post-install-istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: ["authentication.istio.io"] # needed to create default authn policy
   resources: ["*"]
@@ -16045,26 +16045,26 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-security-post-install-role-binding-default
+  name: istio-security-post-install-role-binding-istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-security-post-install-default
+  name: istio-security-post-install-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-security-post-install-account
-    namespace: default
+    namespace: istio-system
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: istio-security-post-install-1.3.0
-  namespace: default
+  namespace: istio-system
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -16072,7 +16072,7 @@ metadata:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   template:
     metadata:
@@ -16081,7 +16081,7 @@ spec:
         app: security
         chart: security
         heritage: Tiller
-        release: release-name
+        release: istio
     spec:
       serviceAccountName: istio-security-post-install-account
       containers:
@@ -16137,12 +16137,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-citadel-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 
 ---
 # Source: istio/charts/sidecarInjectorWebhook/templates/serviceaccount.yaml
@@ -16150,12 +16150,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-sidecar-injector-service-account
-  namespace: default
+  namespace: istio-system
   labels:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 
 ---
@@ -16164,19 +16164,19 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-multi
-  namespace: default
+  namespace: istio-system
 
 ---
 # Source: istio/charts/galley/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-galley-default
+  name: istio-galley-istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["validatingwebhookconfigurations"]
@@ -16221,7 +16221,7 @@ metadata:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: [""]
   resources:
@@ -16361,7 +16361,7 @@ metadata:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: [""]
   resources:
@@ -16487,12 +16487,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-mixer-default
+  name: istio-mixer-istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: ["config.istio.io"] # istio CRD watcher
   resources: ["*"]
@@ -16512,12 +16512,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-pilot-default
+  name: istio-pilot-istio-system
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: ["config.istio.io"]
   resources: ["*"]
@@ -16549,12 +16549,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: prometheus-default
+  name: prometheus-istio-system
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: [""]
   resources:
@@ -16576,12 +16576,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-citadel-default
+  name: istio-citadel-istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 rules:
 - apiGroups: [""]
   resources: ["configmaps"]
@@ -16601,12 +16601,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-sidecar-injector-default
+  name: istio-sidecar-injector-istio-system
   labels:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 rules:
 - apiGroups: [""]
@@ -16635,20 +16635,20 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-galley-admin-role-binding-default
+  name: istio-galley-admin-role-binding-istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-galley-default
+  name: istio-galley-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-galley-service-account
-    namespace: default
+    namespace: istio-system
 
 ---
 # Source: istio/charts/kiali/templates/clusterrolebinding.yaml
@@ -16656,12 +16656,12 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-kiali-admin-role-binding-default
+  name: istio-kiali-admin-role-binding-istio-system
   labels:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -16669,7 +16669,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kiali-service-account
-  namespace: default
+  namespace: istio-system
 
 ---
 # Source: istio/charts/mixer/templates/clusterrolebinding.yaml
@@ -16677,101 +16677,101 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-mixer-admin-role-binding-default
+  name: istio-mixer-admin-role-binding-istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-mixer-default
+  name: istio-mixer-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-mixer-service-account
-    namespace: default
+    namespace: istio-system
 
 ---
 # Source: istio/charts/pilot/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-pilot-default
+  name: istio-pilot-istio-system
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-pilot-default
+  name: istio-pilot-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-pilot-service-account
-    namespace: default
+    namespace: istio-system
 
 ---
 # Source: istio/charts/prometheus/templates/clusterrolebindings.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: prometheus-default
+  name: prometheus-istio-system
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: prometheus-default
+  name: prometheus-istio-system
 subjects:
 - kind: ServiceAccount
   name: prometheus
-  namespace: default
+  namespace: istio-system
 
 ---
 # Source: istio/charts/security/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-citadel-default
+  name: istio-citadel-istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-citadel-default
+  name: istio-citadel-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-citadel-service-account
-    namespace: default
+    namespace: istio-system
 
 ---
 # Source: istio/charts/sidecarInjectorWebhook/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-sidecar-injector-admin-role-binding-default
+  name: istio-sidecar-injector-admin-role-binding-istio-system
   labels:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-sidecar-injector-default
+  name: istio-sidecar-injector-istio-system
 subjects:
   - kind: ServiceAccount
     name: istio-sidecar-injector-service-account
-    namespace: default
+    namespace: istio-system
 
 ---
 # Source: istio/templates/clusterrolebinding.yaml
@@ -16788,7 +16788,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: istio-multi
-  namespace: default
+  namespace: istio-system
 
 ---
 # Source: istio/charts/gateways/templates/role.yaml
@@ -16797,7 +16797,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: istio-ingressgateway-sds
-  namespace: default
+  namespace: istio-system
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -16811,7 +16811,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: istio-ingressgateway-sds
-  namespace: default
+  namespace: istio-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -16827,12 +16827,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-galley
-  namespace: default
+  namespace: istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: galley
 spec:
   ports:
@@ -16852,18 +16852,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-ingressgateway
-  namespace: default
+  namespace: istio-system
   annotations:
   labels:
     chart: gateways
     heritage: Tiller
-    release: release-name
+    release: istio
     app: istio-ingressgateway
     istio: ingressgateway
 spec:
   type: LoadBalancer
   selector:
-    release: release-name
+    release: istio
     app: istio-ingressgateway
     istio: ingressgateway
   ports:
@@ -16912,13 +16912,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana
-  namespace: default
+  namespace: istio-system
   annotations:
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   type: ClusterIP
   ports:
@@ -16935,12 +16935,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kiali
-  namespace: default
+  namespace: istio-system
   labels:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   ports:
   - name: http-kiali
@@ -16956,14 +16956,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-policy
-  namespace: default
+  namespace: istio-system
   annotations:
    networking.istio.io/exportTo: "*"
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: mixer
 spec:
   ports:
@@ -16981,14 +16981,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-telemetry
-  namespace: default
+  namespace: istio-system
   annotations:
    networking.istio.io/exportTo: "*"
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: mixer
 spec:
   ports:
@@ -17012,12 +17012,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-pilot
-  namespace: default
+  namespace: istio-system
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: pilot
 spec:
   ports:
@@ -17038,14 +17038,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus
-  namespace: default
+  namespace: istio-system
   annotations:
     prometheus.io/scrape: 'true'
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   selector:
     app: prometheus
@@ -17062,12 +17062,12 @@ metadata:
   # we use the normal name here (e.g. 'prometheus')
   # as grafana is configured to use this as a data source
   name: istio-citadel
-  namespace: default
+  namespace: istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: citadel
 spec:
   ports:
@@ -17086,12 +17086,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-sidecar-injector
-  namespace: default
+  namespace: istio-system
   labels:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 spec:
   ports:
@@ -17108,12 +17108,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-galley
-  namespace: default
+  namespace: istio-system
   labels:
     app: galley
     chart: galley
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: galley
 spec:
   replicas: 1
@@ -17130,7 +17130,7 @@ spec:
         app: galley
         chart: galley
         heritage: Tiller
-        release: release-name      
+        release: istio      
         istio: galley
       annotations:
         sidecar.istio.io/inject: "false"
@@ -17152,7 +17152,7 @@ spec:
           - --livenessProbePath=/healthliveness
           - --readinessProbePath=/healthready
           - --readinessProbeInterval=1s
-          - --deployment-namespace=default
+          - --deployment-namespace=istio-system
           - --insecure=true
           - --validation-webhook-config-file
           - /etc/config/validatingwebhookconfiguration.yaml
@@ -17241,11 +17241,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-ingressgateway
-  namespace: default
+  namespace: istio-system
   labels:
     chart: gateways
     heritage: Tiller
-    release: release-name
+    release: istio
     app: istio-ingressgateway
     istio: ingressgateway
 spec:
@@ -17263,7 +17263,7 @@ spec:
       labels:
         chart: gateways
         heritage: Tiller
-        release: release-name
+        release: istio
         app: istio-ingressgateway
         istio: ingressgateway
       annotations:
@@ -17373,7 +17373,7 @@ spec:
           - name: ISTIO_META_WORKLOAD_NAME
             value: istio-ingressgateway
           - name: ISTIO_META_OWNER
-            value: kubernetes://api/apps/v1/namespaces/default/deployments/istio-ingressgateway
+            value: kubernetes://api/apps/v1/namespaces/istio-system/deployments/istio-ingressgateway
           - name: ISTIO_META_ROUTER_MODE
             value: sni-dnat
           volumeMounts:
@@ -17440,12 +17440,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: default
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   replicas: 1
   selector:
@@ -17457,7 +17457,7 @@ spec:
         app: grafana
         chart: grafana
         heritage: Tiller
-        release: release-name
+        release: istio
       annotations:
         sidecar.istio.io/inject: "false"
         prometheus.io/scrape: "true"
@@ -17601,12 +17601,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kiali
-  namespace: default
+  namespace: istio-system
   labels:
     app: kiali
     chart: kiali
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   replicas: 1
   selector:
@@ -17619,7 +17619,7 @@ spec:
         app: kiali
         chart: kiali
         heritage: Tiller
-        release: release-name
+        release: istio
       annotations:
         sidecar.istio.io/inject: "false"
         scheduler.alpha.kubernetes.io/critical-pod: ""
@@ -17721,12 +17721,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-policy
-  namespace: default
+  namespace: istio-system
   labels:
     app: istio-mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: mixer
 spec:
   replicas: 1
@@ -17744,7 +17744,7 @@ spec:
         app: policy
         chart: mixer
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: mixer
         istio-mixer-type: policy
       annotations:
@@ -17807,11 +17807,11 @@ spec:
           - --address
           - unix:///sock/mixer.socket
           - --log_output_level=default:info
-          - --configStoreURL=mcp://istio-galley.default.svc:9901
-          - --configDefaultNamespace=default
+          - --configStoreURL=mcp://istio-galley.istio-system.svc:9901
+          - --configDefaultNamespace=istio-system
           - --useAdapterCRDs=false
           - --useTemplateCRDs=false
-          - --trace_zipkin_url=http://zipkin.default:9411/api/v1/spans
+          - --trace_zipkin_url=http://zipkin.istio-system:9411/api/v1/spans
         env:
         - name: GODEBUG
           value: "gctrace=1"
@@ -17893,12 +17893,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-telemetry
-  namespace: default
+  namespace: istio-system
   labels:
     app: istio-mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: mixer
 spec:
   replicas: 1
@@ -17916,7 +17916,7 @@ spec:
         app: telemetry
         chart: mixer
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: mixer
         istio-mixer-type: telemetry
       annotations:
@@ -17979,10 +17979,10 @@ spec:
           - --address
           - unix:///sock/mixer.socket
           - --log_output_level=default:info
-          - --configStoreURL=mcp://istio-galley.default.svc:9901
-          - --configDefaultNamespace=default
+          - --configStoreURL=mcp://istio-galley.istio-system.svc:9901
+          - --configDefaultNamespace=istio-system
           - --useAdapterCRDs=false
-          - --trace_zipkin_url=http://zipkin.default:9411/api/v1/spans
+          - --trace_zipkin_url=http://zipkin.istio-system:9411/api/v1/spans
           - --averageLatencyThreshold
           - 100ms
           - --loadsheddingMode
@@ -18075,13 +18075,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-pilot
-  namespace: default
+  namespace: istio-system
   # TODO: default template doesn't have this, which one is right ?
   labels:
     app: pilot
     chart: pilot
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: pilot
   annotations:
     checksum/config-volume: f8da08b6b8c170dde721efd680270b2901e750d4aa186ebb6c22bef5b78a43f9
@@ -18100,7 +18100,7 @@ spec:
         app: pilot
         chart: pilot
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: pilot
       annotations:
         sidecar.istio.io/inject: "false"
@@ -18259,12 +18259,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: default
+  namespace: istio-system
   labels:
     app: prometheus
     chart: prometheus
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   replicas: 1
   selector:
@@ -18276,7 +18276,7 @@ spec:
         app: prometheus
         chart: prometheus
         heritage: Tiller
-        release: release-name
+        release: istio
       annotations:
         sidecar.istio.io/inject: "false"
     spec:
@@ -18357,12 +18357,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-citadel
-  namespace: default
+  namespace: istio-system
   labels:
     app: security
     chart: security
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: citadel
 spec:
   replicas: 1
@@ -18379,7 +18379,7 @@ spec:
         app: security
         chart: security
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: citadel
       annotations:
         sidecar.istio.io/inject: "false"
@@ -18392,8 +18392,8 @@ spec:
           args:
             - --append-dns-names=true
             - --grpc-port=8060
-            - --citadel-storage-namespace=default
-            - --custom-dns-names=istio-pilot-service-account.default:istio-pilot.default
+            - --citadel-storage-namespace=istio-system
+            - --custom-dns-names=istio-pilot-service-account.istio-system:istio-pilot.istio-system
             - --monitoring-port=15014
             - --self-signed-ca=true
             - --workload-cert-ttl=2160h
@@ -18444,12 +18444,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-sidecar-injector
-  namespace: default
+  namespace: istio-system
   labels:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
     istio: sidecar-injector
 spec:
   replicas: 1
@@ -18466,7 +18466,7 @@ spec:
         app: sidecarInjectorWebhook
         chart: sidecarInjectorWebhook
         heritage: Tiller
-        release: release-name
+        release: istio
         istio: sidecar-injector
       annotations:
         sidecar.istio.io/inject: "false"
@@ -18573,12 +18573,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istio-tracing
-  namespace: default
+  namespace: istio-system
   labels:
     app: jaeger
     chart: tracing
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   selector:
     matchLabels:
@@ -18589,7 +18589,7 @@ spec:
         app: jaeger
         chart: tracing
         heritage: Tiller
-        release: release-name
+        release: istio
       annotations:
         sidecar.istio.io/inject: "false"
         prometheus.io/scrape: "true"
@@ -18687,13 +18687,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: release-name-tracing
-  namespace: default
+  name: istio-tracing
+  namespace: istio-system
   labels:
     app: jaeger
     chart: tracing
     heritage: Tiller
-    release: release-name
+    release: istio
   annotations:
 spec:
   rules:
@@ -18711,25 +18711,25 @@ apiVersion: v1
 kind: List
 metadata:
   name: jaeger-services
-  namespace: default
+  namespace: istio-system
   labels:
     app: jaeger
     chart: tracing
     heritage: Tiller
-    release: release-name
+    release: istio
 items:
 - apiVersion: v1
   kind: Service
   metadata:
     name: jaeger-query
-    namespace: default
+    namespace: istio-system
     annotations:
     labels:
       app: jaeger
       jaeger-infra: jaeger-service
       chart: tracing
       heritage: Tiller
-      release: release-name
+      release: istio
   spec:
     ports:
       - name: query-http
@@ -18742,13 +18742,13 @@ items:
   kind: Service
   metadata:
     name: jaeger-collector
-    namespace: default
+    namespace: istio-system
     labels:
       app: jaeger
       jaeger-infra: collector-service
       chart: tracing
       heritage: Tiller
-      release: release-name
+      release: istio
   spec:
     ports:
     - name: jaeger-collector-tchannel
@@ -18766,13 +18766,13 @@ items:
   kind: Service
   metadata:
     name: jaeger-agent
-    namespace: default
+    namespace: istio-system
     labels:
       app: jaeger
       jaeger-infra: agent-service
       chart: tracing
       heritage: Tiller
-      release: release-name
+      release: istio
   spec:
     ports:
     - name: agent-zipkin-thrift
@@ -18799,23 +18799,23 @@ apiVersion: v1
 kind: List
 metadata:
   name: tracing-services
-  namespace: default
+  namespace: istio-system
   labels:
     app: jaeger
     chart: tracing
     heritage: Tiller
-    release: release-name
+    release: istio
 items:
 - apiVersion: v1
   kind: Service
   metadata:
     name: zipkin
-    namespace: default
+    namespace: istio-system
     labels:
       app: jaeger
       chart: tracing
       heritage: Tiller
-      release: release-name
+      release: istio
   spec:
     type: ClusterIP
     ports:
@@ -18829,13 +18829,13 @@ items:
   kind: Service
   metadata:
     name: tracing
-    namespace: default
+    namespace: istio-system
     annotations:
     labels:
       app: jaeger
       chart: tracing
       heritage: Tiller
-      release: release-name
+      release: istio
   spec:
     ports:
       - name: http-query
@@ -18857,13 +18857,13 @@ metadata:
     app: sidecarInjectorWebhook
     chart: sidecarInjectorWebhook
     heritage: Tiller
-    release: release-name
+    release: istio
 webhooks:
   - name: sidecar-injector.istio.io
     clientConfig:
       service:
         name: istio-sidecar-injector
-        namespace: default
+        namespace: istio-system
         path: "/inject"
       caBundle: ""
     rules:
@@ -18982,12 +18982,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: attributemanifest
 metadata:
   name: istioproxy
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   attributes:
     origin.ip:
@@ -19125,12 +19125,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: attributemanifest
 metadata:
   name: kubernetes
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   attributes:
     source.ip:
@@ -19191,12 +19191,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestcount
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19228,12 +19228,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestduration
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19265,12 +19265,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestsize
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19302,12 +19302,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: responsesize
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19339,12 +19339,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpbytesent
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19372,12 +19372,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpbytereceived
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19405,12 +19405,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpconnectionsopened
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19438,12 +19438,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpconnectionsclosed
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: metric
   params:
@@ -19471,12 +19471,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: handler
 metadata:
   name: prometheus
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledAdapter: prometheus
   params:
@@ -19484,7 +19484,7 @@ spec:
       metricsExpiryDuration: "10m"
     metrics:
     - name: requests_total
-      instance_name: requestcount.instance.default
+      instance_name: requestcount.instance.istio-system
       kind: COUNTER
       label_names:
       - reporter
@@ -19508,7 +19508,7 @@ spec:
       - permissive_response_policyid
       - connection_security_policy
     - name: request_duration_seconds
-      instance_name: requestduration.instance.default
+      instance_name: requestduration.instance.istio-system
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -19535,7 +19535,7 @@ spec:
         explicit_buckets:
           bounds: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
     - name: request_bytes
-      instance_name: requestsize.instance.default
+      instance_name: requestsize.instance.istio-system
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -19564,7 +19564,7 @@ spec:
           scale: 1
           growthFactor: 10
     - name: response_bytes
-      instance_name: responsesize.instance.default
+      instance_name: responsesize.instance.istio-system
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -19593,7 +19593,7 @@ spec:
           scale: 1
           growthFactor: 10
     - name: tcp_sent_bytes_total
-      instance_name: tcpbytesent.instance.default
+      instance_name: tcpbytesent.instance.istio-system
       kind: COUNTER
       label_names:
       - reporter
@@ -19613,7 +19613,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_received_bytes_total
-      instance_name: tcpbytereceived.instance.default
+      instance_name: tcpbytereceived.instance.istio-system
       kind: COUNTER
       label_names:
       - reporter
@@ -19633,7 +19633,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_connections_opened_total
-      instance_name: tcpconnectionsopened.instance.default
+      instance_name: tcpconnectionsopened.instance.istio-system
       kind: COUNTER
       label_names:
       - reporter
@@ -19653,7 +19653,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_connections_closed_total
-      instance_name: tcpconnectionsclosed.instance.default
+      instance_name: tcpconnectionsclosed.instance.istio-system
       kind: COUNTER
       label_names:
       - reporter
@@ -19677,12 +19677,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promhttp
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   match: (context.protocol == "http" || context.protocol == "grpc") && (match((request.useragent | "-"), "kube-probe*") == false) && (match((request.useragent | "-"), "Prometheus*") == false)
   actions:
@@ -19697,12 +19697,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcp
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   match: context.protocol == "tcp"
   actions:
@@ -19715,12 +19715,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcpconnectionopen
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   match: context.protocol == "tcp" && ((connection.event | "na") == "open")
   actions:
@@ -19732,12 +19732,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcpconnectionclosed
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   match: context.protocol == "tcp" && ((connection.event | "na") == "close")
   actions:
@@ -19749,12 +19749,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: handler
 metadata:
   name: kubernetesenv
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledAdapter: kubernetesenv
   params:
@@ -19770,12 +19770,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: kubeattrgenrulerule
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   actions:
   - handler: kubernetesenv
@@ -19786,12 +19786,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: tcpkubeattrgenrulerule
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   match: context.protocol == "tcp"
   actions:
@@ -19803,12 +19803,12 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: attributes
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
   compiledTemplate: kubernetes
   params:
@@ -19849,14 +19849,14 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: istio-policy
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
-  host: istio-policy.default.svc.cluster.local
+  host: istio-policy.istio-system.svc.cluster.local
   trafficPolicy:
     connectionPool:
       http:
@@ -19867,14 +19867,14 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: istio-telemetry
-  namespace: default
+  namespace: istio-system
   labels:
     app: mixer
     chart: mixer
     heritage: Tiller
-    release: release-name
+    release: istio
 spec:
-  host: istio-telemetry.default.svc.cluster.local
+  host: istio-telemetry.istio-system.svc.cluster.local
   trafficPolicy:
     connectionPool:
       http:
