@@ -17,6 +17,7 @@ import com.virtualpairprogrammers.tracker.domain.VehicleBuilder;
 import com.virtualpairprogrammers.tracker.domain.VehicleNotFoundException;
 import com.virtualpairprogrammers.tracker.domain.VehiclePosition;
 import com.virtualpairprogrammers.tracker.externalservices.ExternalVehicleTelemetryService;
+import com.virtualpairprogrammers.tracker.externalservices.StaffManagementService;
 import com.virtualpairprogrammers.tracker.externalservices.TelemetryServiceUnavailableException;
 
 /**
@@ -36,6 +37,10 @@ public class DataBasicInMemoryImpl implements Data
 	@Autowired
 	private ExternalVehicleTelemetryService telemetryService;
 	
+	// See case #22, bad code but we were forced to do this!
+	@Autowired
+	private StaffManagementService staffService;
+	
 	public DataBasicInMemoryImpl()
 	{
 		positionDatabase = new HashMap<>();
@@ -54,13 +59,16 @@ public class DataBasicInMemoryImpl implements Data
 		
 		VehiclePosition vehicleWithSpeed;
 		try {
-			BigDecimal speed = telemetryService.getSpeedFor(vehicleName); // SLOW if upstream unavailable. Could be an Istio demo.
+			BigDecimal speed = telemetryService.getSpeedFor(vehicleName);
 			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withSpeed(speed).withTimestamp(new Date()).build();
 		} catch (TelemetryServiceUnavailableException e) {
 			vehicleWithSpeed = new VehicleBuilder().withVehiclePostion(data).withTimestamp(new Date()).build();
 		}
 		positions.add(vehicleWithSpeed);
 		telemetryService.updateData(data); // see case #8 for details on why we do this last
+		
+		String speed = (vehicleWithSpeed.getSpeed() != null) ? ""+ vehicleWithSpeed.getSpeed() : "0"; 
+		staffService.updateSpeedDataFor(vehicleWithSpeed.getName(), speed);
 	}
 	
 	@Override

@@ -20,7 +20,6 @@ public class IncomingReportsController {
 	@RequestMapping( method=RequestMethod.POST, value="/vehicles/")
 	public void receiveUpdatedPostion(@RequestBody VehiclePosition newReport) throws ParseException 
 	{
-		// TODO : long random delays here
 		data.updatePosition(newReport);
 	}
 

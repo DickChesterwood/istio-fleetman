@@ -17,7 +17,7 @@ public class ExternalVehicleTelemetryService
 {
 	@Autowired
 	private TelemetryRestService telemetryService;
-	
+		
 	private Logger log = LoggerFactory.getLogger(ExternalVehicleTelemetryService.class);
 
 	public void updateData(VehiclePosition vehicleName)
