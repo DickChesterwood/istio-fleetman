@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name="staffService", url="${staff-service-url}")
-public interface StaffManagementService {
+public interface DriverMonitoringService {
 	@RequestMapping(method=RequestMethod.POST, value="/driver/{vehicleName}/{speed}")
 	public void updateSpeedDataFor(@PathVariable("vehicleName") String vehicleName, @PathVariable("speed") String speed); 
 }

@@ -1,14 +1,27 @@
 package com.virtualpairprogrammers.staffmanagement.services;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@FeignClient(url="${driverMonitoring.url}", name="driver-monitoring-service")
-public interface ExternalDriverMonitoringSystem {
+@Service
+public class ExternalDriverMonitoringSystem {
 
-	@RequestMapping(method=RequestMethod.POST, value="/driver/")
-	void updateSpeedLogFor(@RequestParam("name") String name, @RequestBody String speed);
+	private Logger log = LoggerFactory.getLogger(ExternalDriverMonitoringSystem.class);
+
+	@Autowired
+	private DriverManagementMicroserviceCalls microservice;
+	
+	public void updateSpeedLogFor(String name, String speed) {
+		try 
+		{
+			microservice.updateSpeedLogFor(name, speed);
+		}
+		catch (Exception e)
+		{
+			log.warn("Legacy driver monitoring system unavailable");
+		}
+	}
+	
 }

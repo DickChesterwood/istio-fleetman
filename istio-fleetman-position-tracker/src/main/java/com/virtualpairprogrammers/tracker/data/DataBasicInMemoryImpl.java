@@ -17,7 +17,7 @@ import com.virtualpairprogrammers.tracker.domain.VehicleBuilder;
 import com.virtualpairprogrammers.tracker.domain.VehicleNotFoundException;
 import com.virtualpairprogrammers.tracker.domain.VehiclePosition;
 import com.virtualpairprogrammers.tracker.externalservices.ExternalVehicleTelemetryService;
-import com.virtualpairprogrammers.tracker.externalservices.StaffManagementService;
+import com.virtualpairprogrammers.tracker.externalservices.DriverMonitoringService;
 import com.virtualpairprogrammers.tracker.externalservices.TelemetryServiceUnavailableException;
 
 /**
@@ -39,7 +39,7 @@ public class DataBasicInMemoryImpl implements Data
 	
 	// See case #22, bad code but we were forced to do this!
 	@Autowired
-	private StaffManagementService staffService;
+	private DriverMonitoringService driverMonitoringService;
 	
 	public DataBasicInMemoryImpl()
 	{
@@ -67,8 +67,9 @@ public class DataBasicInMemoryImpl implements Data
 		positions.add(vehicleWithSpeed);
 		telemetryService.updateData(data); // see case #8 for details on why we do this last
 		
-		String speed = (vehicleWithSpeed.getSpeed() != null) ? ""+ vehicleWithSpeed.getSpeed() : "0"; 
-		staffService.updateSpeedDataFor(vehicleWithSpeed.getName(), speed);
+		String speed = (vehicleWithSpeed.getSpeed() != null) ? ""+ vehicleWithSpeed.getSpeed() : "0";
+		
+		driverMonitoringService.updateSpeedDataFor(vehicleWithSpeed.getName(), speed);
 	}
 	
 	@Override
