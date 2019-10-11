@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:4
+        image: richardchesterwood/istio-fleetman-position-simulator:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
-        # imagePullPolicy: Always
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,12 +38,12 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:4
+        image: richardchesterwood/istio-fleetman-position-tracker:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
         command: ["java","-Xmx50m","-jar","webapp.jar"]
-        # imagePullPolicy: Always
+        imagePullPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:4
+        image: richardchesterwood/istio-fleetman-api-gateway:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: richardchesterwood/istio-fleetman-webapp-angular:4
+        image: richardchesterwood/istio-fleetman-webapp-angular:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -107,7 +107,7 @@ spec:
     spec:
       containers:
       - name: vehicle-telemtry
-        image: richardchesterwood/istio-fleetman-vehicle-telemetry:4
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -129,7 +129,7 @@ spec:
     spec:
       containers:
       - name: staff-service
-        image: richardchesterwood/istio-fleetman-staff-service:4
+        image: richardchesterwood/istio-fleetman-staff-service:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -151,7 +151,7 @@ spec:
     spec:
       containers:
       - name: photo-service
-        image: richardchesterwood/istio-fleetman-photo-service:4
+        image: richardchesterwood/istio-fleetman-photo-service:5
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice

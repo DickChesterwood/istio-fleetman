@@ -68,7 +68,7 @@
 			
 				<configuration>			
 			        <!-- <dockerHost>unix:///var/run/docker.sock</dockerHost> -->
-			        <dockerHost>tcp://192.168.99.144:2376</dockerHost>  
+			        <dockerHost>tcp://192.168.99.148:2376</dockerHost>  
                     <certPath>C:\cygwin64\home\Richard\.minikube\certs</certPath>
 			
 			        <verbose>true</verbose>
@@ -84,7 +84,7 @@
 									<descriptorRef>artifact</descriptorRef>
 								</assembly>
 								<tags>
-									<tag>4</tag>
+									<tag>5</tag>
 								</tags>
 							</build>
 						</image>
