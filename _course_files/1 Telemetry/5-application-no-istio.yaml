@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: position-simulator
+        mylabel: DickyBoys
+        version: v873
     spec:
       containers:
       - name: position-simulator
@@ -133,28 +135,6 @@ spec:
           value: production-microservice
         imagePullPolicy: Always
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: photo-service
-spec:
-  selector:
-    matchLabels:
-      app: photo-service
-  replicas: 1
-  template: # template for the pods
-    metadata:
-      labels:
-        app: photo-service
-    spec:
-      containers:
-      - name: photo-service
-        image: richardchesterwood/istio-fleetman-photo-service:6
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: production-microservice
-        imagePullPolicy: Always
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -218,18 +198,6 @@ metadata:
 spec:
   selector:
     app: staff-service
-  ports:
-    - name: http
-      port: 8080
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: fleetman-photo-service
-spec:
-  selector:
-    app: photo-service
   ports:
     - name: http
       port: 8080
