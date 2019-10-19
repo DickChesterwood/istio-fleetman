@@ -1,15 +1,3 @@
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  name: kiali
-  namespace: istio-system
-  labels:
-    app: kiali
-data:
-  username: YWRtaW4=
-  passphrase: YWRtaW4=
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
