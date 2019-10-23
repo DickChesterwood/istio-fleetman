@@ -73,7 +73,7 @@
 			
 				<configuration>			
 			        <!-- <dockerHost>unix:///var/run/docker.sock</dockerHost> -->
-			        <dockerHost>tcp://192.168.99.155:2376</dockerHost>  
+			        <dockerHost>tcp://192.168.99.160:2376</dockerHost>  
                     <certPath>C:\cygwin64\home\Richard\.minikube\certs</certPath>
 			
 			        <verbose>true</verbose>
@@ -89,7 +89,7 @@
 									<descriptorRef>artifact</descriptorRef>
 								</assembly>
 								<tags>
-									<tag>6</tag>
+									<tag>6-no-header-propagation</tag>
 								</tags>
 							</build>
 						</image>
