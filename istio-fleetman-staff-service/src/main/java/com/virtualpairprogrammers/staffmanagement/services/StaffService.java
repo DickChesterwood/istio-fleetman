@@ -18,13 +18,14 @@ public class StaffService
 	    {"London Riverside", "Herman Boyce"},
 	    {"Village Truck", "June Snell"}}).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 	
-	private static final String PLACEHOLDER="https://rac-istio-course-images.s3.amazonaws.com/placeholder.png";
+	private static final String PLACEHOLDER="https://avatars0.githubusercontent.com/u/16841947?s=460&v=4";
 	
 	public StaffRecord getDriverDetailsFor(String vehicleName) 
 	{
-		String driverName = drivers.get(vehicleName);
-		String staffPhoto = PLACEHOLDER;
-		return new StaffRecord(driverName, staffPhoto);
+		throw new RuntimeException("Low on resources");
+//		String driverName = drivers.get(vehicleName);
+//		String staffPhoto = PLACEHOLDER;
+//		return new StaffRecord(driverName, staffPhoto);
 	}
 
 }

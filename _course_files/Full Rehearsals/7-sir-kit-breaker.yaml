@@ -1,0 +1,14 @@
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-staff-service
+  namespace: default
+spec:
+  host: fleetman-staff-service
+  trafficPolicy:
+    timeout: 0.1s
+    outlierDetection:
+      consecutiveErrors: 2
+      interval: 5s # CONFUSING!!!!
+      baseEjectionTime: 1s
+      maxEjectionPercent: 100

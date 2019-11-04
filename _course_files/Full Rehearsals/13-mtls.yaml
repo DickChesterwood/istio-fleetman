@@ -1,0 +1,59 @@
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "MeshPolicy"
+metadata:
+  name: "default"
+spec:
+  peers:
+  - mtls: {}
+---
+# Mesh wide policy
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: "default"
+  namespace: "istio-system"
+spec:
+  host: "*.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+
+
+---
+# For authorization: step 1, switch RBAC on...
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ClusterRbacConfig
+metadata:
+  name: default
+spec:
+  mode: 'ON_WITH_INCLUSION'
+  inclusion:
+    services: ["fleetman-staff-service.default.svc.cluster.local"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: staff-management-user
+  namespace: default
+spec:
+  rules:
+  - services: ["fleetman-staff-service.default.svc.cluster.local"]
+    methods: ["GET","POST"]
+---
+# Ensure you modify the deployment of the api gateway!!!
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: i-am-the-api-gateway
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: staff-management-user-rb
+  namespace: default
+spec:
+  subjects:
+  - user: "cluster.local/ns/default/sa/i-am-the-api-gateway"
+  roleRef:
+    kind: ServiceRole
+    name: "staff-management-user"

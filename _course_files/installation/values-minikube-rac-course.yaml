@@ -1,0 +1,56 @@
+# Custom setup for Istio, runnable within Minikube. Not for production use (the requests are likely too small).
+# Ensure this file is referenced "to the right of" the standard values.yaml, to ensure these values take precedence.
+
+gateways:
+  istio-ingressgateway:
+    autoscaleEnabled: false
+  istio-egressgateway:
+    autoscaleEnabled: false
+  istio-ilbgateway:
+    autoscaleEnabled: false
+
+tracing:
+  enabled: true
+  ingress:
+    enabled: true
+
+global:
+  # disablePolicyChecks disables mixer policy checks.
+  # if mixer.policy.enabled==true then disablePolicyChecks has affect.
+  # Will set the value with same name in istio config map - pilot needs to be restarted to take effect.
+  disablePolicyChecks: false
+  mtls:
+    enabled: false # We will switch this on later
+  proxy:
+    accessLogFile: "/dev/stdout"
+    init:
+      resources:
+        requests:
+          cpu: 10m
+    resources:
+      requests:
+        cpu: 10m  # default 100m
+
+pilot:
+  traceSampling: 100
+  autoscaleEnabled: false
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+
+mixer:
+  telemetry:
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 50m
+    autoscaleEnabled: false
+  policy:
+    autoscaleEnabled: false
+
+grafana:
+  enabled: true
+
+kiali:
+  enabled: true
