@@ -11,11 +11,6 @@ spec:
         - headers:
             x-my-header:
               exact: canary
-      fault:
-        abort:
-          httpStatus: 503
-          percentage:
-            value: 100
       route:
         - destination:
             host: fleetman-staff-service
