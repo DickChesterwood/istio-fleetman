@@ -1,0 +1,6 @@
+To generate the two yaml files:
+
+ helm template ../istio-1.3.0/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system > istio-init.yaml
+ helm template ../istio-1.3.0/install/kubernetes/helm/istio --name istio --namespace istio-system --values values-minikube-rac-course.yaml > istio-main-minikube-profile.yaml
+
+

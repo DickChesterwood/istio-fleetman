@@ -15150,7 +15150,7 @@ data:
     # If AccessLogEncoding is JSON, value will be parsed as map[string]string
     # example: '{"start_time": "%START_TIME%", "req_method": "%REQ(:METHOD)%"}'
     # Leave empty to use default log format
-    accessLogFormat: "[%START_TIME%] %REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %RESPONSE_CODE% Header: %REQ(X-MY-HEADER)% REQ-ID: %REQ(X-REQUEST-ID)%\n"
+    accessLogFormat: ""
 
     # Set accessLogEncoding to JSON or TEXT to configure sidecar access log
     accessLogEncoding: 'TEXT'
