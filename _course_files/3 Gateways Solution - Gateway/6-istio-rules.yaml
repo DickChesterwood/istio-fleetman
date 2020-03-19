@@ -28,11 +28,11 @@ spec:
         - destination:
             host: fleetman-webapp
             subset: original
-          weight: 90
+          weight: 100
         - destination:
             host: fleetman-webapp
             subset: experimental
-          weight: 10
+          weight: 0
 ---
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3

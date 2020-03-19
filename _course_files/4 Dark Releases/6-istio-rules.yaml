@@ -26,7 +26,7 @@ spec:
   http:
     - match:
       - headers:  # IF
-          x-my-header:
+          my-header:
             exact: canary
       route: # THEN
       - destination:
@@ -51,3 +51,4 @@ spec:
     - labels:
         version: experimental
       name: experimental
+      
