@@ -4,4 +4,4 @@ The link here has a coupon code which is valid until 9th November 2019: https://
 
 Aim: make Istio understandable - it's not that hard. I don't mention TCP/IP stack levels once. Or the CNCF.
 
-There will be further material added later in November.
+There will be further material added later [I'm working on this, but in slower time!]
