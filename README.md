@@ -1,3 +1,5 @@
+* Note: updated for Istio 1.5 on 3 April 2020. The master branch is now the 1.5 version. The old legacy version of the code files is now on its own branch.*
+
 Now available at VirtualPairProgrammers.com and Udemy!
 
 The link here has a coupon code which is valid until 9th November 2019: https://www.udemy.com/course/istio-hands-on-for-kubernetes/?couponCode=6082122CC64DA306A8AB
