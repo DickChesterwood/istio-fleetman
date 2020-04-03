@@ -1,0 +1,20 @@
+---
+# See case #23
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  hosts:
+  - 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  location: MESH_EXTERNAL
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+#  - number: 443
+#    name: https-port-for-tls-origination
+#    protocol: HTTPS
+  resolution: DNS
+---
+  
