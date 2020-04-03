@@ -1,4 +1,4 @@
-** Note: updated for Istio 1.5 on 3 April 2020. The master branch is now the 1.5 version. The old legacy version of the code files is now on its own branch. **
+**Note: updated for Istio 1.5 on 3 April 2020. The master branch is now the 1.5 version. The old legacy version of the code files is now on its own branch.**
 
 Now available at VirtualPairProgrammers.com and Udemy!
 
