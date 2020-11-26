@@ -1,4 +1,6 @@
-**Note: updated for Istio 1.5 on 3 April 2020. The master branch is now the 1.5 version.**
+**Note: Currently working on updates for v1.8.**
+
+For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
 
 Now available at VirtualPairProgrammers.com and Udemy!
 
