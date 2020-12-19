@@ -24,7 +24,6 @@ metadata:
   namespace: default
 spec:
   host: fleetman-staff-service # Service
-  trafficPolicy: ~
   subsets:
     - labels:   # SELECTOR.
         version: safe # find pods with label "safe"

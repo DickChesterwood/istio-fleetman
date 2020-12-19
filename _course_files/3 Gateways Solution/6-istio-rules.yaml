@@ -11,7 +11,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"   # Domain name of the external website
+    - "fleetman.com"   # Domain name of the external website
 ---
 kind: VirtualService
 apiVersion: networking.istio.io/v1alpha3
@@ -20,22 +20,19 @@ metadata:
   namespace: default
 spec:
   hosts:      # which incoming host are we applying the proxy rules to???
-    - "*"
+    - "fleetman.com" # Copy the value in the gateway hosts - usually a Domain Name
   gateways:
     - ingress-gateway-configuration
   http:
-    - match:
-      - headers:  # IF
-          my-header:
-            exact: canary
-      route: # THEN
-      - destination:
-          host: fleetman-webapp
-          subset: experimental
-    - route: # CATCH ALL
-      - destination:
-          host: fleetman-webapp
-          subset: original
+    - route:
+        - destination:
+            host: fleetman-webapp
+            subset: original
+          weight: 90
+        - destination:
+            host: fleetman-webapp
+            subset: experimental
+          weight: 10
 ---
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3
@@ -51,4 +48,3 @@ spec:
     - labels:
         version: experimental
       name: experimental
-      

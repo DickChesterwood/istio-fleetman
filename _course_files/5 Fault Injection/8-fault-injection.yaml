@@ -11,7 +11,7 @@ spec:
         abort:
           httpStatus: 503
           percentage:
-            value: 10
+            value: 100
       route:
         - destination:
             host: fleetman-vehicle-telemetry
