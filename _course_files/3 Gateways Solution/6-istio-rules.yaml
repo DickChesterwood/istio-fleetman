@@ -11,7 +11,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "fleetman.com"   # Domain name of the external website
+    - "*"   # Domain name of the external website
 ---
 kind: VirtualService
 apiVersion: networking.istio.io/v1alpha3
@@ -20,7 +20,7 @@ metadata:
   namespace: default
 spec:
   hosts:      # which incoming host are we applying the proxy rules to???
-    - "fleetman.com" # Copy the value in the gateway hosts - usually a Domain Name
+    - "*" # Copy the value in the gateway hosts - usually a Domain Name
   gateways:
     - ingress-gateway-configuration
   http:
