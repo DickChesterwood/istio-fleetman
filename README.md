@@ -1,4 +1,4 @@
-**Note: updated for version 1.8 on 19 Dec 2020**
+**Note: updated for version 1.10.3 on 16 July 2021**
 
 For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
 
