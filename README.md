@@ -1,4 +1,6 @@
-**Note: updated for version 1.10.3 on 16 July 2021**
+**Note: updated for version 1.15 on 27 September 2022**
+
+This version of Istio *should* support Apple M1 processors, your feedback will be very much appreciated on this.
 
 For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
 
