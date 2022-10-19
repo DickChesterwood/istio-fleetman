@@ -5238,6 +5238,9 @@ data:
     external_services:
       custom_dashboards:
         enabled: true
+      tracing:
+        in_cluster_url: 'http://tracing.istio-system:80/jaeger'
+        use_grpc: false
     identity:
       cert_file: ""
       private_key_file: ""
