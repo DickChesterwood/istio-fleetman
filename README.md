@@ -1,6 +1,4 @@
-**Note: updated for version 1.15 on 27 September 2022**
-
-This version of Istio *should* support Apple M1 processors, your feedback will be very much appreciated on this.
+*** Note January 2023: currently upgrading the course images to support arm64/mac properly ***
 
 For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
 
@@ -12,4 +10,3 @@ VirtualPairProgrammers: https://virtualpairprogrammers.com/training-courses/Isti
 
 Aim: make Istio understandable - it's not that hard. I don't mention TCP/IP stack levels once. Or the CNCF.
 
-There will be further material added later [I'm working on this, but in slower time!]
