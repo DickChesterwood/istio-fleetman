@@ -1,0 +1,9 @@
+# This will enforce that ONLY traffic that is TLS is allowed between proxies
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
+metadata:
+  name: "default"
+  namespace: "istio-system"
+spec:
+  mtls:
+    mode: STRICT

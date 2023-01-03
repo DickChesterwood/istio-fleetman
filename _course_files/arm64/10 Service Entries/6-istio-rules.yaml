@@ -1,0 +1,120 @@
+# Brings the external service at http://2oujlno5e4.execute-api.us-east-1.amazonaws.com
+# into the Istio Service Mesh. We can now monitor this service and apply routing rules,
+# short circuiting, etc.
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  hosts:
+  - 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  location: MESH_EXTERNAL
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port-for-tls-origination
+    protocol: HTTPS
+  resolution: DNS
+---
+# See case #23 - this is a legacy service that we're integrating with
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  hosts:
+  - 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  http:
+  - match:
+    - uri :
+        prefix: "/"
+    route:
+    - destination:
+        host: virtualpairprogrammers.com
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  host: virtualpairprogrammers.com
+---
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: google
+spec:
+  hosts:
+  - google.com
+  - "www.google.com"
+  location: MESH_EXTERNAL
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: outgoing-monitoring
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - google.com
+    - www.google.com
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-google
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+  - name: google
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: direct-google-through-egress-gateway
+spec:
+  hosts:
+  - www.google.com
+  gateways:
+  - istio-egressgateway
+  - mesh
+  http:
+  - match:
+    - gateways:
+      - mesh
+      port: 80
+    route:
+    - destination:
+        host: istio-egressgateway.istio-system.svc.cluster.local
+        subset: google
+        port:
+          number: 80
+      weight: 100
+  - match:
+    - gateways:
+      - outgoing-monitoring   # take careful note of this
+      port: 80
+    route:
+    - destination:
+        host: www.google.com
+        port:
+          number: 80
+      weight: 100

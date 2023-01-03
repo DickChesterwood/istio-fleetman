@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingress-gateway-configuration
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*.fleetman.com"   # Domain name of the external website
+    - "fleetman.com"
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-webapp
+  namespace: default
+spec:
+  hosts:      # which incoming host are we applying the proxy rules to???
+    - "fleetman.com"
+  gateways:
+    - ingress-gateway-configuration
+  http:
+    - route:
+      - destination:
+          host: fleetman-webapp
+          subset: original
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-webapp-experiment
+  namespace: default
+spec:
+  hosts:      # which incoming host are we applying the proxy rules to???
+    - "experimental.fleetman.com"
+  gateways:
+    - ingress-gateway-configuration
+  http:
+      - route:
+        - destination:
+            host: fleetman-webapp
+            subset: experimental
+---
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: fleetman-webapp
+  namespace: default
+spec:
+  host: fleetman-webapp
+  subsets:
+    - labels:
+        version: original
+      name: original
+    - labels:
+        version: experimental
+      name: experimental

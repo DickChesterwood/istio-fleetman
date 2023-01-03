@@ -1,0 +1,299 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-simulator
+spec:
+  selector:
+    matchLabels:
+      app: position-simulator
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: position-simulator
+        version: latest
+    spec:
+      containers:
+      - name: position-simulator
+        image: richardchesterwood/istio-fleetman-position-simulator:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-tracker
+spec:
+  selector:
+    matchLabels:
+      app: position-tracker
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: position-tracker
+        version: latest
+    spec:
+      containers:
+      - name: position-tracker
+        image: richardchesterwood/istio-fleetman-position-tracker:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: api-gateway
+        version: v2
+    spec:
+      containers:
+      - name: api-gateway
+        image: richardchesterwood/istio-fleetman-api-gateway:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: webapp
+        version: latest
+    spec:
+      containers:
+      - name: webapp
+        image: richardchesterwood/istio-fleetman-webapp-angular:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-telemetry
+spec:
+  selector:
+    matchLabels:
+      app: vehicle-telemetry
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: vehicle-telemetry
+        version: latest
+    spec:
+      containers:
+      - name: vehicle-telemtry
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staff-service
+spec:
+  selector:
+    matchLabels:
+      app: staff-service
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: staff-service
+        version: latest
+    spec:
+      containers:
+      - name: staff-service
+        image: richardchesterwood/istio-fleetman-staff-service:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-service
+spec:
+  selector:
+    matchLabels:
+      app: photo-service
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: photo-service
+        version: latest
+    spec:
+      containers:
+      - name: photo-service
+        image: richardchesterwood/istio-fleetman-photo-service:5
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-webapp
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: webapp
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30080
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-position-tracker
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: position-tracker
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-api-gateway
+spec:
+  selector:
+    app: api-gateway
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-vehicle-telemetry
+spec:
+  selector:
+    app: vehicle-telemetry
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-staff-service
+spec:
+  selector:
+    app: staff-service
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-photo-service
+spec:
+  selector:
+    app: photo-service
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+---
+# See case #23
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  hosts:
+  - 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  location: MESH_EXTERNAL
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port-for-tls-origination
+    protocol: HTTPS
+  resolution: DNS
+---
+# See case #23 - this is a legacy service that we're integrating with
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  hosts:
+  - 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  http:
+  - match:
+    - port: 80
+    route:
+    - destination:
+        host: 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+        port:
+          number: 443
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: fleetman-driver-monitoring
+spec:
+  host: 2oujlno5e4.execute-api.us-east-1.amazonaws.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: SIMPLE
