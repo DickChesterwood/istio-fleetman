@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Vehicle } from './vehicle';
 import { Staff } from './staff';
-import { Observable ,  Subscription, BehaviorSubject ,  of } from 'rxjs';
+import { Observable ,  Subscription, BehaviorSubject ,  of , interval} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-
-import {Message} from '@stomp/stompjs';
-import {StompService} from '@stomp/ng2-stompjs';
 
 import {  LatLng } from 'leaflet';
 
@@ -20,35 +17,30 @@ export class VehicleService  {
   centerVehicle: BehaviorSubject<Vehicle>;
   centerVehicleHistory: BehaviorSubject<any>;
   currentDriver: BehaviorSubject<any>;
+  timedUpdate: Subscription;
+  source = interval(1000);
 
-  constructor(private _stompService: StompService, private http: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     // Store local reference to Observable
     // for use with template ( | async )
-    this.subscribe();
     this.subscription = new BehaviorSubject(null);
     this.centerVehicle = new BehaviorSubject(null);
     this.centerVehicleHistory = new BehaviorSubject(null);
     this.currentDriver = new BehaviorSubject(null);
+    this.timedUpdate = this.source.subscribe(val =>   this.http.get("http://" + window.location.hostname + ":" + window.location.port + "/api/vehicles/")
+             .subscribe( data => this.updateAllPositions(data)));    
   }
 
-  subscribe() {
-    // Stream of messages
-    var messages = this._stompService.subscribe('/vehiclepositions/messages');
-    // Subscribe a function to be run on_next message
-    messages.subscribe(this.onMessage);
-  }
-
-  /** This is responding to an incoming websocket message, an updated vehicle report */
-  onMessage = (message: Message) => {
-    let body = JSON.parse(message.body);
-
-    // update vehicle and notify
-    let newVehicle = new Vehicle(body.name,
+  updateAllPositions(data) {
+    data.forEach( (body) => {
+          console.log(body);
+          let newVehicle = new Vehicle(body.name,
                                  Number(body.lat),
                                  Number(body.lng),
                                  body.timestamp,
-                                 body.speed);
-    this.subscription.next(newVehicle);
+                                 body.speed);     
+          this.subscription.next(newVehicle);
+    });
   }
 
   updateCenterVehicle(centerVehicle: Vehicle) {
@@ -65,7 +57,6 @@ export class VehicleService  {
   }
 
   getStaffDriverFor(vehicle: String) {
-    // TODO set the icon to spinning disks?
     let dummy = new Staff();
     dummy.name="Error";
     this.currentDriver.next(new Staff());

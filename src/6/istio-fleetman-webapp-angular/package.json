@@ -24,7 +24,6 @@
     "@angular/router": "8.2.7",
     "@asymmetrik/ngx-leaflet": "6.0.1",
     "@ng-bootstrap/ng-bootstrap": "5.1.1",
-    "@stomp/ng2-stompjs": "7.2.0",
     "bootstrap": "^4.1.1",
     "core-js": "3.2.1",
     "font-awesome": "4.7.0",

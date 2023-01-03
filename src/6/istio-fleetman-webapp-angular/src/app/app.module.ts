@@ -11,7 +11,6 @@ import { MapComponent } from './map/map.component';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
-import {StompConfig, StompService} from '@stomp/ng2-stompjs';
 import { HeaderComponent } from './header/header.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -23,17 +22,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OverlayModule } from "@angular/cdk/overlay";
 import { MatSnackBarModule } from '@angular/material';
-
-
-const stompConfig: StompConfig = {
-     url: environment.gatewayUrl.replace('http','ws') + "/updates",
-     headers: {
-     },
-     heartbeat_in: 0, // Typical value 0 - disabled
-     heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
-     reconnect_delay: 5000,
-     debug: false
-};
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/vehicle/City%20Truck', pathMatch: 'full' },
@@ -64,12 +52,7 @@ const appRoutes: Routes = [
     MatSnackBarModule  
   ],
   providers: [VehicleService,
-              MatSnackBar,
-              StompService,
-              {
-                 provide: StompConfig,
-                 useValue: stompConfig
-              }],
+              MatSnackBar],
   bootstrap: [AppComponent]
 })
 export class AppModule {
