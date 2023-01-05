@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: position-simulator
-        image: richardchesterwood/istio-fleetman-position-simulator:6-no-header-propagation-arm64
+        image: richardchesterwood/istio-fleetman-position-simulator:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: position-tracker
-        image: richardchesterwood/istio-fleetman-position-tracker:6-no-header-propagation-arm64
+        image: richardchesterwood/istio-fleetman-position-tracker:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: richardchesterwood/istio-fleetman-api-gateway:6-no-header-propagation-arm64
+        image: richardchesterwood/istio-fleetman-api-gateway:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -83,7 +83,6 @@ spec:
     spec:
       containers:
       - name: webapp
-        # I didn't bother rebuilding the webapp.
         image: richardchesterwood/istio-fleetman-webapp-angular:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
@@ -106,7 +105,7 @@ spec:
     spec:
       containers:
       - name: vehicle-telemtry
-        image: richardchesterwood/istio-fleetman-vehicle-telemetry:6-no-header-propagation-arm64
+        image: richardchesterwood/istio-fleetman-vehicle-telemetry:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
@@ -125,10 +124,36 @@ spec:
     metadata:
       labels:
         app: staff-service
+        version: safe
+    spec:
+      containers:
+      - image: richardchesterwood/istio-fleetman-staff-service:6-placeholder-arm64
+        name: staff-service        
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staff-service-risky-version
+spec:
+  selector:
+    matchLabels:
+      app: staff-service
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: staff-service
+        version: risky
     spec:
       containers:
       - name: staff-service
-        image: richardchesterwood/istio-fleetman-staff-service:6-no-header-propagation-arm64
+        image: richardchesterwood/istio-fleetman-staff-service:6-arm64
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice

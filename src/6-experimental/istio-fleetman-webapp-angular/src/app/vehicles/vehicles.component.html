@@ -1,0 +1,18 @@
+
+  <table class="table table-responsive table-hover table-condensed">
+    <thead class=".thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Last seen</th>
+        <th scope="col">Speed mph</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vehicle of vehicles"  (click)="centerVehicle(vehicle)"
+          [class.table-info]="vehicle.name === centeredVehicle"  style="cursor:pointer">
+        <th scope="row"><span class="fa fa-truck"></span>{{vehicle.name}}</th>
+        <td>{{vehicle.dateAndTime | date:'HH:mm:ss'}}</td>
+        <td>{{vehicle.speed | number:'0.0-0' || '--'}}</td>
+      </tr>
+    </tbody>
+  </table>

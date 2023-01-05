@@ -1,0 +1,9 @@
+#mapid {
+  width: auto;
+  overflow: hidden;
+	height:calc(100% - 210px);
+  border-left: 0px solid black;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}

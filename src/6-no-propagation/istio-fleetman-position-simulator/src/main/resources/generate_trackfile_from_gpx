@@ -1,0 +1,10 @@
+#! /bin/bash
+
+for f in raw_gpx/*.gpx
+do 
+   filename=$(basename "$f")
+   extension="${filename##*.}"
+   filename="${filename%.*}"
+
+   cat $f | grep \<trkpt | cut "-d " -f 5,6 | cut -f 1 -d '>' > new_tracks/$filename
+done

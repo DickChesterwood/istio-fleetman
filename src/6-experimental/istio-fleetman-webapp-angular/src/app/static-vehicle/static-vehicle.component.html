@@ -1,0 +1,15 @@
+<div id="staticVehicle" class="container-fluid" class="col-md-12">
+  <div *ngIf="currentDriver" class="pull-left">
+      <img id="photo" class="img-thumbnail " src="{{currentDriver.photo}}"/>
+  </div>
+  <div class="pull-left">
+    <div id="title">
+      <h1>{{centerVehicle.name}}</h1>
+    </div>
+
+    <div id="dataArea">
+      <p>Last seen at {{centerVehicle.lat}}, {{centerVehicle.lng}}</p>
+      <p *ngIf="currentDriver">Driver: {{currentDriver.name}}</p>
+    </div>
+  </div>
+</div>

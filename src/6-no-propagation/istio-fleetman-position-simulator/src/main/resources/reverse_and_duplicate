@@ -1,0 +1,8 @@
+#! /bin/bash
+
+for f in tracks/*
+do 
+   filename=$(basename "$f")
+echo $f
+   cat $f > ./new_tracks/$filename ; tac $f >> ./new_tracks/$filename
+done
