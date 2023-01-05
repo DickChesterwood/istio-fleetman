@@ -1,0 +1,2 @@
+Use the arm64 folder for Macs running Apple Silicon - ie M1, M2, etc
+Use the x64_amd64 folder for other platforms (Ie Intel or AMD systems)
