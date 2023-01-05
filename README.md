@@ -1,4 +1,4 @@
-*** Note January 2023: currently upgrading the course images to support arm64/mac properly ***
+***January 2023: should now support arm64 (Apple silicon) properly ***
 
 For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
 
