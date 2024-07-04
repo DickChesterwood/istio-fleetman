@@ -3429,7 +3429,7 @@ spec:
   selector:
     app: istio-ingressgateway
     istio: ingressgateway
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: v1
 kind: Service
