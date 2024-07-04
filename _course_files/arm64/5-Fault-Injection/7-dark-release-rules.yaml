@@ -15,7 +15,7 @@ spec:
         abort:
           percentage:
             value: 100.0
-        httpStatus: 418 # BE CAREFUL WITH INDENTATION!
+          httpStatus: 418 # BE CAREFUL WITH INDENTATION!
       route:
         - destination:
             host: fleetman-staff-service
