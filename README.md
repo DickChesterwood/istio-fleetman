@@ -1,3 +1,5 @@
+Getting error while installing 2-istio-minikube.yaml   
+ MountVolume.SetUp failed for volume "istiod-ca-cert" : configmap "istio-ca-root-cert" not found
 ***January 2023: should now support arm64 (Apple silicon) properly ***
 
 For support, please visit the support service on the platform you're following the course on (Udemy or VPP). I generally check every day.
